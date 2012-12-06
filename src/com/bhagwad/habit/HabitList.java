@@ -1,6 +1,7 @@
 package com.bhagwad.habit;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class HabitList extends Activity {
 		});
         
         getContentResolver().query(HabitColumns.CONTENT_URI_HABITS, new String[] {HabitColumns.HABIT_NAME}, null, null, null);
+
     }
 
     @Override
