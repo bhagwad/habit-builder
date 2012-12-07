@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.util.Log;
 import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 
-public class HabitsContentProvider extends ContentProvider {
+public class HabitContentProvider extends ContentProvider {
 
 	private static final String DATABASE_NAME = "habits.db";
 	private static final int DATABASE_VERSION = 1;
@@ -129,7 +129,6 @@ public class HabitsContentProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 		
-		Log.d("Debug", c.getColumnCount() + "");
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 
 		return c;

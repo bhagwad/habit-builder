@@ -38,8 +38,6 @@ public class HabitList extends Activity {
 				
 			}
 		});
-        
-        getContentResolver().query(HabitColumns.CONTENT_URI_HABITS, new String[] {HabitColumns.HABIT_NAME}, null, null, null);
 
     }
 
