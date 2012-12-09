@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,8 +67,12 @@ public class HabitList extends Activity {
     	public Dialog onCreateDialog(Bundle savedInstanceState) {
     		
     		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    		builder.setMessage("Test Dialog box");
-    		builder.setPositiveButton("Yes", new OnClickListener() {
+    		builder.setMessage("Create a New Habit");
+    		
+    		LayoutInflater inflator = getActivity().getLayoutInflater();
+    		builder.setView(inflator.inflate(R.layout.habit_entry, null));
+    		
+    		builder.setPositiveButton("Save", new OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
@@ -75,7 +80,7 @@ public class HabitList extends Activity {
 				}
 			});
     		
-    		builder.setNegativeButton("No", new OnClickListener() {
+    		builder.setNegativeButton("Cancel", new OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
