@@ -1,20 +1,20 @@
 package com.bhagwad.habit;
 
 import android.app.Activity;
-import android.content.ContentValues;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 
 public class HabitList extends Activity {
 
@@ -34,8 +34,9 @@ public class HabitList extends Activity {
         listViewHabit.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				startActivity(new Intent(HabitList.this, HabitDetails.class));
-				
+				//startActivity(new Intent(HabitList.this, HabitDetails.class));
+				HabitEntry testDialog = new HabitEntry();
+				testDialog.show(getFragmentManager(), "test");
 			}
 		});
 
@@ -58,5 +59,32 @@ public class HabitList extends Activity {
     	}
     	
     	return true;
+    }
+    
+    private class HabitEntry extends DialogFragment {
+    	@Override
+    	public Dialog onCreateDialog(Bundle savedInstanceState) {
+    		
+    		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    		builder.setMessage("Test Dialog box");
+    		builder.setPositiveButton("Yes", new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+    		
+    		builder.setNegativeButton("No", new OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+    		
+    		
+    		return builder.create();
+    	}
     }
 }
