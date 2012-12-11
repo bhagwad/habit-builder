@@ -13,18 +13,22 @@ public final class R {
     public static final class drawable {
         public static final int ic_action_search=0x7f020000;
         public static final int ic_launcher=0x7f020001;
+        public static final int plus=0x7f020002;
     }
     public static final class id {
         public static final int button_habit_cancel=0x7f070009;
         public static final int button_habit_save=0x7f070008;
-        public static final int editText_habit_name=0x7f070005;
-        public static final int editText_habit_reason=0x7f070004;
-        public static final int edittext_habit_goal=0x7f070007;
+        public static final int editText_habit_name=0x7f070004;
+        public static final int edittext_habit_goal=0x7f070006;
+        public static final int imageView1=0x7f07000d;
+        public static final int linearlayout_new_row=0x7f07000c;
         public static final int listview_habit=0x7f07000a;
-        public static final int menu_new_habit=0x7f07000d;
-        public static final int menu_settings=0x7f07000c;
-        public static final int textView1=0x7f070006;
+        public static final int menu_new_habit=0x7f070010;
+        public static final int menu_settings=0x7f07000f;
+        public static final int textView1=0x7f070005;
         public static final int textView4=0x7f070003;
+        public static final int textView_create_new_habit=0x7f07000e;
+        public static final int textView_habit_duplicate=0x7f070007;
         public static final int textView_habit_list_name=0x7f07000b;
         public static final int textView_habit_name=0x7f070000;
         public static final int textView_habit_occurrences=0x7f070001;
@@ -35,6 +39,7 @@ public final class R {
         public static final int habit_entry=0x7f030001;
         public static final int habit_list=0x7f030002;
         public static final int habit_list_item=0x7f030003;
+        public static final int list_add_new_habit=0x7f030004;
     }
     public static final class menu {
         public static final int habit_entry=0x7f060000;

@@ -1,9 +1,10 @@
 package com.bhagwad.habit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bhagwad.habit.HabitEntry.HabitEntryListener;
 
@@ -25,16 +27,22 @@ public class HabitList extends Activity implements HabitEntryListener {
 
 		String[] items = new String[] { "Item 1", "Item 2", "Item 3" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-
+		
+		// Set the first row
+		LayoutInflater li = this.getLayoutInflater();
+		listViewHabit.addHeaderView(li.inflate(R.layout.list_add_new_habit, null));
+		
 		listViewHabit.setAdapter(adapter);
-
 		listViewHabit.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// startActivity(new Intent(HabitList.this,
-				// HabitDetails.class));
-				HabitEntry testDialog = new HabitEntry();
-				testDialog.show(getFragmentManager(), "test");
+				
+				if (view.getId() == R.id.linearlayout_new_row) {
+					
+					HabitEntry habitEntryDialog = new HabitEntry();
+					habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
+				}
+				
 			}
 		});
 
@@ -60,7 +68,7 @@ public class HabitList extends Activity implements HabitEntryListener {
 	}
 
 	public void onHabitEntry(String mHabitName, String mHabitGoal) {
-		Log.d ("Debug", mHabitName + " " + mHabitGoal);
+		//Log.d ("Debug", mHabitName + " " + mHabitGoal);
 		
 	}
 
