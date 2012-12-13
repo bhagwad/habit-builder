@@ -20,31 +20,26 @@ public final class R {
         public static final int button_habit_save=0x7f070008;
         public static final int editText_habit_name=0x7f070004;
         public static final int edittext_habit_goal=0x7f070006;
-        public static final int imageView1=0x7f07000d;
-        public static final int linearlayout_new_row=0x7f07000c;
+        public static final int habit_delete=0x7f07000d;
         public static final int listview_habit=0x7f07000a;
-        public static final int menu_new_habit=0x7f070010;
+        public static final int menu_add=0x7f07000c;
         public static final int textView1=0x7f070005;
         public static final int textView4=0x7f070003;
-        public static final int textView_create_new_habit=0x7f07000e;
-        public static final int textView_habit_duplicate=0x7f070007;
+        public static final int textView_habit_error=0x7f070007;
         public static final int textView_habit_list_name=0x7f07000b;
         public static final int textView_habit_name=0x7f070000;
         public static final int textView_habit_occurrences=0x7f070001;
         public static final int textView_habit_skipped=0x7f070002;
-        public static final int toast=0x7f07000f;
     }
     public static final class layout {
         public static final int habit_details=0x7f030000;
         public static final int habit_entry=0x7f030001;
         public static final int habit_list=0x7f030002;
-        public static final int habit_list_cab=0x7f030003;
-        public static final int habit_list_item=0x7f030004;
-        public static final int list_add_new_habit=0x7f030005;
+        public static final int habit_list_item=0x7f030003;
     }
     public static final class menu {
-        public static final int habit_list_cab=0x7f060000;
-        public static final int list_menu=0x7f060001;
+        public static final int habit_list_action_bar=0x7f060000;
+        public static final int habit_list_cab=0x7f060001;
     }
     public static final class string {
         public static final int app_name=0x7f040000;

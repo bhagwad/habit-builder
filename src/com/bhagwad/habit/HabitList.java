@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -39,7 +40,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		getLoaderManager().initLoader(0, null, this);
 
 	}
-
+	
 	private void setUpListViewAndAdapter() {
 		
 		initializeListViewAndSetupCab();
@@ -49,33 +50,17 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		
 		// Set the first row
 		LayoutInflater li = this.getLayoutInflater();
-		listViewHabit.addHeaderView(li.inflate(R.layout.list_add_new_habit, null));
 		listViewHabit.setAdapter(mAdapter);
 
-		listViewHabit.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
-				if (view.getId() == R.id.linearlayout_new_row) {
-					Log.d("Debug", "First item clicked");
-					HabitEntry habitEntryDialog = new HabitEntry();
-					habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
-				}
-				
-			}
-		});
-		
 	}
 
 	private void initializeListViewAndSetupCab() {
-		listViewHabit = (ListView) findViewById(R.id.listview_habit);
-		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		listViewHabit.setLongClickable(true);
 		
+		listViewHabit = (ListView) findViewById(R.id.listview_habit);
+		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		listViewHabit.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 			
 			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 			
@@ -85,13 +70,14 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 			}
 			
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				
 				MenuInflater inflater = mode.getMenuInflater();
 				inflater.inflate(R.menu.habit_list_cab, menu);
 				return true;
 			}
 			
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				// TODO Auto-generated method stub
+				
 				return false;
 			}
 			
@@ -105,7 +91,9 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return true;
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.habit_list_action_bar, menu);
+	    return true;
 	}
 
 	@Override
@@ -113,8 +101,9 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 
 		switch (item.getItemId()) {
 
-		case R.id.menu_new_habit:
-			startActivity(new Intent(this, HabitEntry.class));
+		case R.id.menu_add:
+			HabitEntry habitEntryDialog = new HabitEntry();
+			habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
 
 		}
 
