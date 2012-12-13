@@ -3,6 +3,7 @@ package com.bhagwad.habit;
 import android.app.DialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,8 +46,6 @@ public class HabitEntry extends DialogFragment implements OnClickListener {
 		mSaveHabit.setOnClickListener(this);
 		mCancel.setOnClickListener(this);
 		getDialog().setTitle("Create a New Habit");
-		
-		
 		
 		return v;
 	}
