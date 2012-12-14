@@ -51,9 +51,19 @@ public class HabitContentProvider extends ContentProvider {
 	private DatabaseHelper mOpenHelper;
 
 	@Override
-	public int delete(Uri arg0, String arg1, String[] arg2) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		
+		String mTableName = setTableName(uri);
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		
+		int rowsAffected = db.delete(mTableName, selection, selectionArgs); 
+		
+		if (rowsAffected > 0) {
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+		
+		return rowsAffected;
+		
 	}
 
 	@Override
@@ -71,9 +81,26 @@ public class HabitContentProvider extends ContentProvider {
 			values = new ContentValues();
 		else
 			values = new ContentValues(initialValues);
+		
+		String mTableName = setTableName(uri);
 
+		
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		long rowId = db.insertWithOnConflict(mTableName, HabitColumns._ID, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+		Uri mAddedUri = ContentUris.withAppendedId(uri, rowId);
+
+		if (rowId > 0) {
+			getContext().getContentResolver().notifyChange(mAddedUri, null);
+		}
+
+		return mAddedUri;
+	}
+
+	private String setTableName(Uri uri) {
+		
 		String mTableName;
-
+		
 		switch (sUriMatcher.match(uri)) {
 
 		case HABIT_LIST:
@@ -89,16 +116,7 @@ public class HabitContentProvider extends ContentProvider {
 
 		}
 
-		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		long rowId = db.insertWithOnConflict(mTableName, HabitColumns._ID, values, SQLiteDatabase.CONFLICT_IGNORE);
-
-		Uri mAddedUri = ContentUris.withAppendedId(uri, rowId);
-
-		if (rowId > 0) {
-			getContext().getContentResolver().notifyChange(mAddedUri, null);
-		}
-
-		return mAddedUri;
+		return mTableName;
 	}
 
 	@Override

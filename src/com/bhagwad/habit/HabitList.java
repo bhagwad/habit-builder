@@ -57,10 +57,18 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 	private void initializeListViewAndSetupCab() {
 		
 		listViewHabit = (ListView) findViewById(R.id.listview_habit);
+		
+		/*
+		*For some reason, it's not letting me specify only single item - otherwise
+		*Contextual action bar won't show up. So I'm setting the "single mode" in onPrepareActionMode
+		*and resetting it to multiple choice once the user clicks something.
+		*/
 		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		listViewHabit.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 			
 			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// Allow the user to only select one item
+				listViewHabit.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 				return false;
 			}
 			
@@ -78,6 +86,15 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 			
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				
+				switch (item.getItemId()) {
+				case R.id.menu_habit_delete:
+					Log.d("Debug",listViewHabit.getItemIdAtPosition(listViewHabit.getCheckedItemPosition()) + "");
+					
+					long rowId = listViewHabit.getItemIdAtPosition(listViewHabit.getCheckedItemPosition());
+					getContentResolver().delete(HabitColumns.CONTENT_URI_HABITS, HabitColumns._ID + "=?", new String[] {String.valueOf(rowId)});
+				}
+				
+				listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 				return false;
 			}
 			

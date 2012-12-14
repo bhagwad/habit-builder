@@ -20,9 +20,9 @@ public final class R {
         public static final int button_habit_save=0x7f070008;
         public static final int editText_habit_name=0x7f070004;
         public static final int edittext_habit_goal=0x7f070006;
-        public static final int habit_delete=0x7f07000d;
         public static final int listview_habit=0x7f07000a;
         public static final int menu_add=0x7f07000c;
+        public static final int menu_habit_delete=0x7f07000d;
         public static final int textView1=0x7f070005;
         public static final int textView4=0x7f070003;
         public static final int textView_habit_error=0x7f070007;
