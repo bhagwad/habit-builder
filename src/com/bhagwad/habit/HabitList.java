@@ -4,21 +4,15 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentValues;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -29,6 +23,8 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 	
 	SimpleCursorAdapter mAdapter;
 	ListView listViewHabit;
+	long longSelectedId;
+	boolean inCab = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,37 +40,31 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 	private void setUpListViewAndAdapter() {
 		
 		initializeListViewAndSetupCab();
-		
-		String columns[] = {HabitColumns.HABIT_NAME};
-		mAdapter = new SimpleCursorAdapter(this, R.layout.habit_list_item, null, columns, new int[] {R.id.textView_habit_list_name}, 0);
-		
-		// Set the first row
-		LayoutInflater li = this.getLayoutInflater();
+		String columns[] = {HabitColumns.HABIT_NAME, HabitColumns.HABIT_GOAL};
+		mAdapter = new SimpleCursorAdapter(this, R.layout.habit_list_item, null, columns, new int[] {R.id.textView_habit_list_name, R.id.textView_habit_list_goal}, 0);
 		listViewHabit.setAdapter(mAdapter);
 
 	}
 
 	private void initializeListViewAndSetupCab() {
 		
-		listViewHabit = (ListView) findViewById(R.id.listview_habit);
 		
-		/*
-		*For some reason, it's not letting me specify only single item - otherwise
-		*Contextual action bar won't show up. So I'm setting the "single mode" in onPrepareActionMode
-		*and resetting it to multiple choice once the user clicks something.
-		*/
+		
+		listViewHabit = (ListView) findViewById(R.id.listview_habit);
 		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		
 		listViewHabit.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-			
+
 			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 				// Allow the user to only select one item
-				listViewHabit.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 				return false;
 			}
 			
 			public void onDestroyActionMode(ActionMode mode) {
-				// TODO Auto-generated method stub
-				
+				/*
+				 * We're exiting CAB mode so change the flag back to what it was
+				 * */
+				inCab = false;
 			}
 			
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -88,18 +78,28 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				
 				switch (item.getItemId()) {
 				case R.id.menu_habit_delete:
-					Log.d("Debug",listViewHabit.getItemIdAtPosition(listViewHabit.getCheckedItemPosition()) + "");
 					
-					long rowId = listViewHabit.getItemIdAtPosition(listViewHabit.getCheckedItemPosition());
-					getContentResolver().delete(HabitColumns.CONTENT_URI_HABITS, HabitColumns._ID + "=?", new String[] {String.valueOf(rowId)});
+					/*
+					 * We delete longSelectedId which we set when we first came in
+					 */ 
+					getContentResolver().delete(HabitColumns.CONTENT_URI_HABITS, HabitColumns._ID + "=?", new String[] {String.valueOf(longSelectedId)});	
+					
 				}
-				
-				listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-				return false;
+			
+				return true;
 			}
 			
 			public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-				// TODO Auto-generated method stub
+				/* We have to keep track of the very first item that's selected.
+				 * So inCab will be false the first time we come in and we assign the id
+				 * to longSelected which we will be deleting if the user chooses.
+				 * If the user selects more stuff after the long click, longSelected won't change
+				 * because we've set it to true.
+				 * */
+				if (!inCab) {
+					longSelectedId = id;
+					inCab = true;
+				}
 				
 			}
 		});
