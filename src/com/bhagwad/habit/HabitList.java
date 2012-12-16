@@ -4,15 +4,18 @@ import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -51,6 +54,14 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		
 		
 		listViewHabit = (ListView) findViewById(R.id.listview_habit);
+		listViewHabit.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent i = new Intent(HabitList.this, HabitCalendar.class);
+				i.putExtra(HabitColumns._ID, id);
+				startActivity(i);
+			}
+		});
 		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		
 		listViewHabit.setMultiChoiceModeListener(new MultiChoiceModeListener() {

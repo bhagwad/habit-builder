@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HabitDetails"
+            android:name=".HabitCalendar"
             android:label="@string/title_activity_habit_details" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

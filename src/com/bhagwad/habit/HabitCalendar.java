@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class HabitDetails extends Activity {
+public class HabitCalendar extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.habit_details);
+        setContentView(R.layout.habit_calendar);
     }
 
     @Override
