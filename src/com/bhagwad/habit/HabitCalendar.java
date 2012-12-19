@@ -110,13 +110,14 @@ public class HabitCalendar extends Activity {
 
 			/* Return nothing if the first days are blank */
 			
-			if (position < offset - 1) {
+			if (position < offset) {
 				return "";
 			}
 
-			/*Not very sure why this works, but it does*/
+			/*Subtract the offset from the position. Add 1 because the first day of the month
+			 * is 1 and not 0 */
 			
-			int date = position - offset + 2;
+			int date = position - offset + 1;
 			
 			/*Return nothing if it goes beyond the maximum days in the month*/
 			
@@ -129,14 +130,15 @@ public class HabitCalendar extends Activity {
 		private int getOffset() {
 			
 			/*Create a copy of the Calendar, set it's date to the first and see which day
-			it falls on. Return the offset */
+			it falls on. Return the offset by subtracting one converting it into a zero
+			based index to match the gridview positions */
 			
 			Calendar tempCal = Calendar.getInstance();
 			tempCal.set(Calendar.MONTH, mCalendar.get(Calendar.MONTH));
 			tempCal.set(Calendar.YEAR, mCalendar.get(Calendar.YEAR));
 			tempCal.set(Calendar.DATE, 1);
 
-			return tempCal.get(Calendar.DAY_OF_WEEK);
+			return tempCal.get(Calendar.DAY_OF_WEEK)-1;
 		}
 
 		private void setItemHeight(View v) {
