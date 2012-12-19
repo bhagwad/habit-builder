@@ -30,10 +30,17 @@ public class HabitCalendar extends Activity {
 		setContentView(R.layout.habit_calendar);
 
 		mCalendar = Calendar.getInstance();
+		
 		setUpMonthName();
 		setUpWeekdays();
 		setUpDates();
+		setUpNavigation();
 
+	}
+
+	private void setUpNavigation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void setUpDates() {
@@ -46,7 +53,7 @@ public class HabitCalendar extends Activity {
 
 		TextView monthName = (TextView) findViewById(R.id.textView_monthname);
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM yyyy");
 		simpleDateFormat.setCalendar(mCalendar);
 
 		monthName.setText(simpleDateFormat.format(mCalendar.getTime()));
@@ -68,9 +75,11 @@ public class HabitCalendar extends Activity {
 	private class HabitGrid extends BaseAdapter {
 
 		Context context;
+		int mOffset;
 
 		public HabitGrid(Context ctxt) {
 			context = ctxt;
+			mOffset = getOffset();
 		}
 
 		public int getCount() {
@@ -98,7 +107,7 @@ public class HabitCalendar extends Activity {
 
 				v = (LinearLayout) convertView;
 
-			setItemHeight(v);
+			v.setMinimumHeight(parent.getHeight()/6);
 			TextView t = (TextView) v.findViewById(R.id.textView_date);
 			t.setText(getDateFromPosition(position) + "");
 
@@ -106,18 +115,17 @@ public class HabitCalendar extends Activity {
 		}
 
 		private String getDateFromPosition(int position) {
-			int offset = getOffset();
-
+			
 			/* Return nothing if the first days are blank */
 			
-			if (position < offset) {
+			if (position < mOffset) {
 				return "";
 			}
 
 			/*Subtract the offset from the position. Add 1 because the first day of the month
 			 * is 1 and not 0 */
 			
-			int date = position - offset + 1;
+			int date = position - mOffset + 1;
 			
 			/*Return nothing if it goes beyond the maximum days in the month*/
 			
@@ -139,15 +147,6 @@ public class HabitCalendar extends Activity {
 			tempCal.set(Calendar.DATE, 1);
 
 			return tempCal.get(Calendar.DAY_OF_WEEK)-1;
-		}
-
-		private void setItemHeight(View v) {
-
-			DisplayMetrics metrics = new DisplayMetrics();
-			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-			int height = metrics.heightPixels;
-			v.setMinimumHeight(height / 6);
-
 		}
 
 	}

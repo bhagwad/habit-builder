@@ -7,6 +7,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_month_previous"
+        android:background="#F2F2F2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,6 +16,7 @@
 
     <ImageButton
         android:id="@+id/imageButton_month_next"
+        android:background="#F2F2F2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -51,9 +53,9 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/gridview_habit_calendar_weekdays"
         android:gravity="center"
-        android:horizontalSpacing="10dp"
         android:numColumns="7"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:listSelector="@null"
+         />
 
 </RelativeLayout>
