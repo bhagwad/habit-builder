@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -29,7 +30,6 @@ public class HabitCalendar extends Activity {
 		setContentView(R.layout.habit_calendar);
 
 		mCalendar = Calendar.getInstance();
-
 		setUpMonthName();
 		setUpWeekdays();
 		setUpDates();
@@ -45,10 +45,10 @@ public class HabitCalendar extends Activity {
 	private void setUpMonthName() {
 
 		TextView monthName = (TextView) findViewById(R.id.textView_monthname);
-		
+
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
 		simpleDateFormat.setCalendar(mCalendar);
-		
+
 		monthName.setText(simpleDateFormat.format(mCalendar.getTime()));
 	}
 
@@ -74,7 +74,7 @@ public class HabitCalendar extends Activity {
 		}
 
 		public int getCount() {
-			return mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+			return 42;
 		}
 
 		public Object getItem(int position) {
@@ -100,9 +100,43 @@ public class HabitCalendar extends Activity {
 
 			setItemHeight(v);
 			TextView t = (TextView) v.findViewById(R.id.textView_date);
-			t.setText(position + "");
+			t.setText(getDateFromPosition(position) + "");
 
 			return v;
+		}
+
+		private String getDateFromPosition(int position) {
+			int offset = getOffset();
+
+			/* Return nothing if the first days are blank */
+			
+			if (position < offset - 1) {
+				return "";
+			}
+
+			/*Not very sure why this works, but it does*/
+			
+			int date = position - offset + 2;
+			
+			/*Return nothing if it goes beyond the maximum days in the month*/
+			
+			if (date > mCalendar.getActualMaximum(Calendar.DATE))
+				return "";
+
+			return String.valueOf(date);
+		}
+
+		private int getOffset() {
+			
+			/*Create a copy of the Calendar, set it's date to the first and see which day
+			it falls on. Return the offset */
+			
+			Calendar tempCal = Calendar.getInstance();
+			tempCal.set(Calendar.MONTH, mCalendar.get(Calendar.MONTH));
+			tempCal.set(Calendar.YEAR, mCalendar.get(Calendar.YEAR));
+			tempCal.set(Calendar.DATE, 1);
+
+			return tempCal.get(Calendar.DAY_OF_WEEK);
 		}
 
 		private void setItemHeight(View v) {
