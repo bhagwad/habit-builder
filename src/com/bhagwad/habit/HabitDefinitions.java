@@ -9,6 +9,7 @@ public final class HabitDefinitions {
 	
 	public static final String TABLE_HABITS = "habits";
 	public  static final String TABLE_HABITS_RECORD = "habits_record";
+	public static final String DATE_FORMAT = "MM/dd/yyyy";
 	
 	private HabitDefinitions() {};
 	

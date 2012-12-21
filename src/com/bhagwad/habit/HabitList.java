@@ -57,8 +57,19 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		listViewHabit.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				/*Get the Habit name and pass it along. Ideally we should send the id instead,
+				 * but this eliminates an additional step for our small application*/
+				
+				String habitName = "";
+				Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_HABITS, new String[] {HabitColumns.HABIT_NAME}, HabitColumns._ID + "=?", new String[] {String.valueOf(id)}, null);
+				if (c.moveToFirst()) {
+					habitName = c.getString(c.getColumnIndexOrThrow(HabitColumns.HABIT_NAME));
+				}
+					
+				
 				Intent i = new Intent(HabitList.this, HabitCalendar.class);
-				i.putExtra(HabitColumns._ID, id);
+				i.putExtra(HabitColumns.HABIT_NAME, habitName);
 				startActivity(i);
 			}
 		});

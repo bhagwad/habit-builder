@@ -32,11 +32,18 @@ public class HabitContentProvider extends ContentProvider {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 
-			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" + HabitColumns._ID + " INTEGER PRIMARY KEY, "
-					+ HabitColumns.HABIT_NAME + " TEXT, " + HabitColumns.HABIT_GOAL + " TEXT" + ");");
+			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" 
+			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
+			+ HabitColumns.HABIT_NAME + " TEXT, " 
+			+ HabitColumns.HABIT_GOAL + " TEXT" + ");");
 
-			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS_RECORD + " (" + HabitColumns._ID + " INTEGER PRIMARY KEY, "
-					+ HabitColumns.HABIT_NAME + " TEXT, " + HabitColumns.HABIT_OCCURRENCE + " TEXT" + ");");
+			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS_RECORD + " (" 
+			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
+			+ HabitColumns.HABIT_NAME + " TEXT, " 
+			+ HabitColumns.HABIT_OCCURRENCE + " TEXT, "
+			+ "UNIQUE ("+HabitColumns.HABIT_NAME+","+HabitColumns.HABIT_OCCURRENCE
+			+ ") ON CONFLICT IGNORE"
+			+ ");");
 
 		}
 
@@ -52,18 +59,18 @@ public class HabitContentProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		
+
 		String mTableName = setTableName(uri);
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		
-		int rowsAffected = db.delete(mTableName, selection, selectionArgs); 
-		
+
+		int rowsAffected = db.delete(mTableName, selection, selectionArgs);
+
 		if (rowsAffected > 0) {
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
-		
+
 		return rowsAffected;
-		
+
 	}
 
 	@Override
@@ -81,10 +88,9 @@ public class HabitContentProvider extends ContentProvider {
 			values = new ContentValues();
 		else
 			values = new ContentValues(initialValues);
-		
+
 		String mTableName = setTableName(uri);
 
-		
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		long rowId = db.insertWithOnConflict(mTableName, HabitColumns._ID, values, SQLiteDatabase.CONFLICT_IGNORE);
 
@@ -98,9 +104,9 @@ public class HabitContentProvider extends ContentProvider {
 	}
 
 	private String setTableName(Uri uri) {
-		
+
 		String mTableName;
-		
+
 		switch (sUriMatcher.match(uri)) {
 
 		case HABIT_LIST:
@@ -146,7 +152,7 @@ public class HabitContentProvider extends ContentProvider {
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
-		
+
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 
 		return c;

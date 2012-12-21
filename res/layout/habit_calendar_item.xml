@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/calendar_cell" >
+    android:background="@drawable/calendar_cell"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
         android:textSize="17dp"
-        android:layout_margin="5dp"         />
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/btn_star_big_on"
+        android:visibility="invisible" />
+
+</RelativeLayout>

@@ -4,20 +4,27 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 
 public class HabitCalendar extends Activity {
 
@@ -25,6 +32,7 @@ public class HabitCalendar extends Activity {
 	GridView mHabitGrid;
 	GridView mGridViewWeekdays;
 	TextView monthName;
+	String habitName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,8 @@ public class HabitCalendar extends Activity {
 		else
 			mCalendar = Calendar.getInstance();
 		
+		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
+		Log.d("Debug", habitName);
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
 		monthName = (TextView) findViewById(R.id.textView_monthname);
 
@@ -90,7 +100,58 @@ public class HabitCalendar extends Activity {
 
 	private void setUpDates() {
 		mHabitGrid.setAdapter(new HabitGrid(this, mCalendar));
+		mHabitGrid.setOnItemClickListener(new OnItemClickListener() {
 
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				
+				if ( isNotBlank(v)) {
+					
+					toggleStar(v);
+					updateDatabaseOccurrence(v);
+					
+				}
+				
+			}
+
+			private boolean isNotBlank(View v) {
+				TextView t = (TextView) v.findViewById(R.id.textView_date);
+				if (t.getVisibility() == View.VISIBLE)
+					return true;
+				else
+					return false;
+			}
+		});
+
+	}
+
+	protected void updateDatabaseOccurrence(View v) {
+		ImageView star = (ImageView) v.findViewById(R.id.imageView_star);
+		TextView textViewDate = (TextView) v.findViewById(R.id.textView_date);
+		
+		/*Create the date string. We add one to the month because January returns 0 insted of 1*/
+		
+		
+		String dateText = textViewDate.getText().toString()+"/"+(mCalendar.get(Calendar.MONTH)+1)+"/"+ mCalendar.get(Calendar.YEAR); 
+		
+		/*If the star is visible, we enter a date. If not, we delete it*/
+		
+		if (star.getVisibility() == View.VISIBLE) {
+			ContentValues cv = new ContentValues();
+			cv.put(HabitColumns.HABIT_NAME, habitName);
+			cv.put(HabitColumns.HABIT_OCCURRENCE, dateText);
+			getContentResolver().insert(HabitColumns.CONTENT_URI_RECORDS, cv);
+		} else {
+			getContentResolver().delete(HabitColumns.CONTENT_URI_RECORDS, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + "=?", new String[] {habitName, dateText});
+		}
+		
+	}
+
+	protected void toggleStar(View v) {
+		ImageView star = (ImageView) v.findViewById(R.id.imageView_star);
+		if (star.getVisibility() == View.INVISIBLE)
+			star.setVisibility(View.VISIBLE);
+		else
+			star.setVisibility(View.INVISIBLE);
 	}
 
 	private void setUpMonthName() {
@@ -150,13 +211,22 @@ public class HabitCalendar extends Activity {
 				v = layoutInflater.inflate(R.layout.habit_calendar_item, null);
 			} else
 
-				v = (LinearLayout) convertView;
+				v = (RelativeLayout) convertView;
 
 			v.setMinimumHeight(parent.getHeight() / 6);
-			TextView t = (TextView) v.findViewById(R.id.textView_date);
-			t.setText(getDateFromPosition(position) + "");
-
+			
+			renderDate(v, position);
 			return v;
+		}
+
+		private void renderDate(View v, int position) {
+			
+			TextView t = (TextView) v.findViewById(R.id.textView_date);
+			String date = getDateFromPosition(position); 
+			t.setText(date);
+			if (!date.equals(""))
+				t.setVisibility(View.VISIBLE);
+			
 		}
 
 		private String getDateFromPosition(int position) {
