@@ -182,12 +182,13 @@ public class HabitCalendar extends Activity {
 		Context context;
 		int mOffset;
 		Calendar mDisplayedMonth;
-		HashMap occurencesInMonths;
+		HashMap <String, Boolean> occurencesInMonths;
 		
 		public HabitGrid(Context ctxt, Calendar c) {
 			context = ctxt;
 			mDisplayedMonth = c;
 			mOffset = getOffset();
+			occurencesInMonths = new HashMap <String, Boolean> ();
 			populateWithStars();
 
 		}
@@ -200,8 +201,18 @@ public class HabitCalendar extends Activity {
 			
 			String dateMatching = "/"+(mDisplayedMonth.get(Calendar.MONTH)+1)+"/"+mCalendar.get(Calendar.YEAR);
 			
-			Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_RECORDS, new String[] {HabitColumns.HABIT_OCCURRENCE}, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + " LIKE ?", new String[] {habitName, "	%"+dateMatching}, null);
-			Log.d("Debug", c.getCount() + "");
+			
+			Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_RECORDS, new String[] {HabitColumns.HABIT_OCCURRENCE}, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + " LIKE ?", new String[] {habitName, "%"+dateMatching}, null);
+			if (c.moveToFirst()) {
+				
+				while (!c.isAfterLast()) {
+					
+					String entry = c.getString(c.getColumnIndexOrThrow(HabitColumns.HABIT_OCCURRENCE));
+					occurencesInMonths.put(entry, true);
+					c.moveToNext();
+				}
+
+			}
 					
 		}
 
