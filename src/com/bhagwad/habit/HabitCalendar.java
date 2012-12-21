@@ -2,10 +2,12 @@ package com.bhagwad.habit;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +49,6 @@ public class HabitCalendar extends Activity {
 			mCalendar = Calendar.getInstance();
 		
 		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
-		Log.d("Debug", habitName);
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
 		monthName = (TextView) findViewById(R.id.textView_monthname);
 
@@ -127,11 +128,13 @@ public class HabitCalendar extends Activity {
 	protected void updateDatabaseOccurrence(View v) {
 		ImageView star = (ImageView) v.findViewById(R.id.imageView_star);
 		TextView textViewDate = (TextView) v.findViewById(R.id.textView_date);
+		TextView textViewMonth = (TextView) v.findViewById(R.id.textView_month);
+		TextView textViewYear = (TextView) v.findViewById(R.id.textView_year);
 		
 		/*Create the date string. We add one to the month because January returns 0 insted of 1*/
 		
 		
-		String dateText = textViewDate.getText().toString()+"/"+(mCalendar.get(Calendar.MONTH)+1)+"/"+ mCalendar.get(Calendar.YEAR); 
+		String dateText = textViewDate.getText().toString()+"/"+textViewMonth.getText().toString() + "/" + textViewYear.getText().toString(); 
 		
 		/*If the star is visible, we enter a date. If not, we delete it*/
 		
@@ -143,7 +146,6 @@ public class HabitCalendar extends Activity {
 		} else {
 			getContentResolver().delete(HabitColumns.CONTENT_URI_RECORDS, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + "=?", new String[] {habitName, dateText});
 		}
-		
 	}
 
 	protected void toggleStar(View v) {
@@ -180,12 +182,27 @@ public class HabitCalendar extends Activity {
 		Context context;
 		int mOffset;
 		Calendar mDisplayedMonth;
-
+		HashMap occurencesInMonths;
+		
 		public HabitGrid(Context ctxt, Calendar c) {
 			context = ctxt;
 			mDisplayedMonth = c;
 			mOffset = getOffset();
+			populateWithStars();
 
+		}
+
+		private void populateWithStars() {
+			
+			/*Querying the database for each date would be inefficient. Instead, I get all the data
+			for the month in one go, create a hashmap with dates in the month that are in it
+			and consult it whenever we need to choose whether to display a star or not*/
+			
+			String dateMatching = "/"+(mDisplayedMonth.get(Calendar.MONTH)+1)+"/"+mCalendar.get(Calendar.YEAR);
+			
+			Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_RECORDS, new String[] {HabitColumns.HABIT_OCCURRENCE}, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + " LIKE ?", new String[] {habitName, "	%"+dateMatching}, null);
+			Log.d("Debug", c.getCount() + "");
+					
 		}
 
 		public int getCount() {
@@ -221,11 +238,21 @@ public class HabitCalendar extends Activity {
 
 		private void renderDate(View v, int position) {
 			
-			TextView t = (TextView) v.findViewById(R.id.textView_date);
+			/*Store the month and year values as well so we can retrieve them when the user
+			clicks on something. Better encapsullation this way.*/
+			
+			TextView textViewDate = (TextView) v.findViewById(R.id.textView_date);
+			TextView textViewMonth = (TextView) v.findViewById(R.id.textView_month);
+			TextView textViewYear = (TextView) v.findViewById(R.id.textView_year);
+			
+			textViewMonth.setText(String.valueOf(mDisplayedMonth.get(Calendar.MONTH)+1));
+			textViewYear.setText(String.valueOf(mDisplayedMonth.get(Calendar.YEAR)));
+			
 			String date = getDateFromPosition(position); 
-			t.setText(date);
+			textViewDate.setText(date);
+			
 			if (!date.equals(""))
-				t.setVisibility(View.VISIBLE);
+				textViewDate.setVisibility(View.VISIBLE);
 			
 		}
 

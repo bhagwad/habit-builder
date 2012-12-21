@@ -16,6 +16,18 @@
         android:textSize="17dp"
         android:textStyle="bold"
         android:visibility="invisible" />
+    
+        <TextView
+        android:id="@+id/textView_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+        
+        <TextView
+        android:id="@+id/textView_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/imageView_star"

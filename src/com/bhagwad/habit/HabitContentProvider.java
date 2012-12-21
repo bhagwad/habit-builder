@@ -149,7 +149,7 @@ public class HabitContentProvider extends ContentProvider {
 			throw new IllegalArgumentException("Unknown URI " + uri);
 
 		}
-
+		
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 
