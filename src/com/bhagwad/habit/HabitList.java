@@ -8,16 +8,21 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
+import android.widget.TextView;
 
 import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 import com.bhagwad.habit.HabitEntry.HabitEntryListener;
@@ -45,6 +50,29 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		initializeListViewAndSetupCab();
 		String columns[] = {HabitColumns.HABIT_NAME, HabitColumns.HABIT_GOAL};
 		mAdapter = new SimpleCursorAdapter(this, R.layout.habit_list_item, null, columns, new int[] {R.id.textView_habit_list_name, R.id.textView_habit_list_goal}, 0);
+		
+		/*We need to perform some calculations for each line. Ideally I would do all this in "getView"
+		with a custom adapter, but cursorloader works too well and I don't know how to use a
+		regular Loader with a custom adapter (if it's even possible). So I'm intercepting control
+		when the view is bound, making sure it runs only once for each item and returning false so that
+		regular binding can occur.*/
+		
+		mAdapter.setViewBinder(new ViewBinder() {
+			
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				
+				if (view.getId() == R.id.textView_habit_list_goal) {
+					setStatistics((LinearLayout) view.getParent());
+				}
+				return false;
+			}
+
+			private void setStatistics(LinearLayout parent) {
+				TextView t = (TextView) parent.findViewById(R.id.textView_habit_list_name);
+				Log.d("Debug", t.getText().toString());
+				
+			}
+		});
 		listViewHabit.setAdapter(mAdapter);
 
 	}
