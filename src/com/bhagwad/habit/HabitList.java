@@ -1,5 +1,10 @@
 package com.bhagwad.habit;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentValues;
@@ -68,9 +73,81 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 			}
 
 			private void setStatistics(LinearLayout parent) {
-				TextView t = (TextView) parent.findViewById(R.id.textView_habit_list_name);
-				Log.d("Debug", t.getText().toString());
 				
+				TextView txtHabitName = (TextView) parent.findViewById(R.id.textView_habit_list_name);
+				TextView txtLatestStreak = (TextView) parent.findViewById(R.id.textView_latest_streak);
+				TextView txtLongestStreak = (TextView) parent.findViewById(R.id.textView_longest_streak);
+				
+				String habitName = txtHabitName.getText().toString();
+				
+				/*Create the hashmap table first with HISTORY_LENGTH entries to be sure*/
+				HashMap<String, Boolean> hashOccurences = generateHashMap(habitName);
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
+				Calendar todaysDate = Calendar.getInstance();
+				
+				/*Iterate through previous dates one by one going back HISTORY_LENGTH*/
+				
+				int latestStreak = 0;
+				boolean onLatestStreak = true;
+				int longestStreak = 0;
+				int currentStreak = 0;
+				boolean isDateChecked;
+				
+				for (int i = 1; i<=HabitDefinitions.HISTORY_LENGTH; i++) {
+					todaysDate.add(Calendar.DATE, -1);
+					String currentDate = dateFormat.format(todaysDate.getTime());
+					
+					if (hashOccurences.get(currentDate) != null)
+						isDateChecked = true;
+					else
+						isDateChecked = false;
+					
+					/*The statistics are calculated here*/
+					
+					if (isDateChecked == true) {
+						
+						if (onLatestStreak == true)
+							latestStreak++;
+						
+						currentStreak++;
+						
+						if (currentStreak > longestStreak)
+							longestStreak = currentStreak;
+						
+					} else {
+						
+						currentStreak = 0;
+						onLatestStreak = false;
+						
+					}
+					
+				}
+				
+				//Log.d("Debug", habitName + " Latest Streak: " + latestStreak + " Longest streak: " + longestStreak);
+				txtLatestStreak.setText("Latest Streak: " + latestStreak);
+				txtLongestStreak.setText("Longest Streak: " + longestStreak);
+				
+			}
+
+			private HashMap<String, Boolean> generateHashMap(String habitName) {
+				
+				HashMap<String, Boolean> hashOccurences = new HashMap<String, Boolean>();
+				
+				Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_RECORDS, new String[] {HabitColumns.HABIT_OCCURRENCE}, HabitColumns.HABIT_NAME + "=?", new String[] {habitName}, HabitColumns.HABIT_OCCURRENCE + " LIMIT " + HabitDefinitions.HISTORY_LENGTH);
+				
+				if (c.moveToFirst()) {
+					
+					while (!c.isAfterLast()) {
+						
+						String entry = c.getString(c.getColumnIndexOrThrow(HabitColumns.HABIT_OCCURRENCE));
+						hashOccurences.put(entry, true);
+						c.moveToNext();
+					}
+
+				}
+				
+				return hashOccurences;
 			}
 		});
 		listViewHabit.setAdapter(mAdapter);
@@ -98,7 +175,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				
 				Intent i = new Intent(HabitList.this, HabitCalendar.class);
 				i.putExtra(HabitColumns.HABIT_NAME, habitName);
-				startActivity(i);
+				startActivityForResult(i, 0);
 			}
 		});
 		listViewHabit.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -153,6 +230,13 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				
 			}
 		});
+		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		getLoaderManager().restartLoader(0, null, this);
 		
 	}
 

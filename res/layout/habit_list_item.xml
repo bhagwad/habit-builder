@@ -18,4 +18,18 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+    <TextView
+        android:id="@+id/textView_latest_streak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView_longest_streak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 </LinearLayout>

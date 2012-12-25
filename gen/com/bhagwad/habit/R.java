@@ -30,13 +30,15 @@ public final class R {
         public static final int imageButton_month_previous=0x7f070001;
         public static final int imageView_star=0x7f070009;
         public static final int listview_habit=0x7f070010;
-        public static final int menu_add=0x7f070013;
-        public static final int menu_habit_delete=0x7f070014;
+        public static final int menu_add=0x7f070015;
+        public static final int menu_habit_delete=0x7f070016;
         public static final int textView1=0x7f07000b;
         public static final int textView_date=0x7f070006;
         public static final int textView_habit_error=0x7f07000d;
         public static final int textView_habit_list_goal=0x7f070012;
         public static final int textView_habit_list_name=0x7f070011;
+        public static final int textView_latest_streak=0x7f070013;
+        public static final int textView_longest_streak=0x7f070014;
         public static final int textView_month=0x7f070007;
         public static final int textView_monthname=0x7f070003;
         public static final int textView_year=0x7f070008;

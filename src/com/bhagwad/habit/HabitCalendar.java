@@ -51,6 +51,8 @@ public class HabitCalendar extends Activity {
 		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
 		monthName = (TextView) findViewById(R.id.textView_monthname);
+		
+		getActionBar().setTitle(habitName);
 
 		setUpMonthName();
 		setUpWeekdays();
@@ -250,14 +252,18 @@ public class HabitCalendar extends Activity {
 		private void renderDate(View v, int position) {
 			
 			/*Store the month and year values as well so we can retrieve them when the user
-			clicks on something. Better encapsullation this way.*/
+			clicks on something. Better encapsulation this way.*/
+			
+			String month = String.valueOf(mDisplayedMonth.get(Calendar.MONTH)+1);
+			String year = String.valueOf(mDisplayedMonth.get(Calendar.YEAR));
 			
 			TextView textViewDate = (TextView) v.findViewById(R.id.textView_date);
 			TextView textViewMonth = (TextView) v.findViewById(R.id.textView_month);
 			TextView textViewYear = (TextView) v.findViewById(R.id.textView_year);
+			ImageView star = (ImageView)v.findViewById(R.id.imageView_star);
 			
-			textViewMonth.setText(String.valueOf(mDisplayedMonth.get(Calendar.MONTH)+1));
-			textViewYear.setText(String.valueOf(mDisplayedMonth.get(Calendar.YEAR)));
+			textViewMonth.setText(month);
+			textViewYear.setText(year);
 			
 			String date = getDateFromPosition(position); 
 			textViewDate.setText(date);
@@ -265,6 +271,10 @@ public class HabitCalendar extends Activity {
 			if (!date.equals(""))
 				textViewDate.setVisibility(View.VISIBLE);
 			
+			String fullDateString = date+ "/" + month + "/" + year;
+			
+			if (occurencesInMonths.get(fullDateString) != null)
+				star.setVisibility(View.VISIBLE);
 		}
 
 		private String getDateFromPosition(int position) {

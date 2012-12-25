@@ -35,16 +35,32 @@ public class HabitContentProvider extends ContentProvider {
 			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" 
 			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
 			+ HabitColumns.HABIT_NAME + " TEXT, " 
-			+ HabitColumns.HABIT_GOAL + " TEXT" + ");");
+			+ HabitColumns.HABIT_GOAL + " TEXT, " 
+			+ "UNIQUE ("+HabitColumns.HABIT_NAME
+			+ ") ON CONFLICT IGNORE"
+			+ ");");
 
 			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS_RECORD + " (" 
 			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
 			+ HabitColumns.HABIT_NAME + " TEXT, " 
 			+ HabitColumns.HABIT_OCCURRENCE + " TEXT, "
 			+ "UNIQUE ("+HabitColumns.HABIT_NAME+","+HabitColumns.HABIT_OCCURRENCE
-			+ ") ON CONFLICT IGNORE"
+			+ ") ON CONFLICT IGNORE, "
+			+ "CONSTRAINT fk_habitname FOREIGN KEY (" + HabitColumns.HABIT_NAME + ") REFERENCES " + HabitDefinitions.TABLE_HABITS + "("+ HabitColumns.HABIT_NAME + ") "
+			+ "ON DELETE CASCADE"
 			+ ");");
 
+		}
+		
+		@Override
+		public void onOpen(SQLiteDatabase db) {
+			// TODO Auto-generated method stub
+			super.onOpen(db);
+			
+			if (!db.isReadOnly()) {
+		        // Enable foreign key constraints
+		        db.execSQL("PRAGMA foreign_keys=ON;");
+		    }
 		}
 
 		@Override

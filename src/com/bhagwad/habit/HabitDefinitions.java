@@ -7,9 +7,10 @@ public final class HabitDefinitions {
 	
 	public static final String AUTHORITY = "com.bhagwad.habit.provider";
 	
+	public static final int HISTORY_LENGTH = 60;	
 	public static final String TABLE_HABITS = "habits";
 	public  static final String TABLE_HABITS_RECORD = "habits_record";
-	public static final String DATE_FORMAT = "MM/dd/yyyy";
+	public static final String DATE_FORMAT = "dd/MM/yyyy";
 	
 	private HabitDefinitions() {};
 	
