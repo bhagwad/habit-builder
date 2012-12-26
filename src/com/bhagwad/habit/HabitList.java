@@ -84,19 +84,48 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				HashMap<String, Boolean> hashOccurences = generateHashMap(habitName);
 				
 				SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
-				Calendar todaysDate = Calendar.getInstance();
+				Calendar todaysDateCal = Calendar.getInstance();
 				
 				/*Iterate through previous dates one by one going back HISTORY_LENGTH*/
 				
-				int latestStreak = 0;
-				boolean onLatestStreak = true;
+				int mostRecentStreak = 0;
+				boolean onMostRecentStreak = true;
 				int longestStreak = 0;
 				int currentStreak = 0;
 				boolean isDateChecked;
 				
+				/*Create a specific string for yesterday's date to handle the special cases of
+				 *yesterday and today. It's messy but our expectations seem arbitrary so no logic
+				 *to put into it */
+				
+				String todaysDate = dateFormat.format(todaysDateCal.getTime());
+				todaysDateCal.add(Calendar.DATE, -1);
+				String yesterdaysDate = dateFormat.format(todaysDateCal.getTime());
+				
+				if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) != null)
+				{
+					mostRecentStreak = 1;
+					longestStreak = 1;
+					currentStreak = 1;
+					
+				} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) != null) {
+					
+					mostRecentStreak = 2;
+					longestStreak = 2;
+					currentStreak = 2;
+					
+				} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) == null) {
+					
+					mostRecentStreak = 1;
+					longestStreak = 1;
+					onMostRecentStreak = false;
+										
+				}
+				
 				for (int i = 1; i<=HabitDefinitions.HISTORY_LENGTH; i++) {
-					todaysDate.add(Calendar.DATE, -1);
-					String currentDate = dateFormat.format(todaysDate.getTime());
+					
+					todaysDateCal.add(Calendar.DATE, -1);
+					String currentDate = dateFormat.format(todaysDateCal.getTime());
 					
 					if (hashOccurences.get(currentDate) != null)
 						isDateChecked = true;
@@ -107,8 +136,8 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					
 					if (isDateChecked == true) {
 						
-						if (onLatestStreak == true)
-							latestStreak++;
+						if (onMostRecentStreak == true)
+							mostRecentStreak++;
 						
 						currentStreak++;
 						
@@ -118,14 +147,16 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					} else {
 						
 						currentStreak = 0;
-						onLatestStreak = false;
+						onMostRecentStreak = false;
+						
+						
 						
 					}
 					
 				}
 				
 				//Log.d("Debug", habitName + " Latest Streak: " + latestStreak + " Longest streak: " + longestStreak);
-				txtLatestStreak.setText("Latest Streak: " + latestStreak);
+				txtLatestStreak.setText("Latest Streak: " + mostRecentStreak);
 				txtLongestStreak.setText("Longest Streak: " + longestStreak);
 				
 			}
