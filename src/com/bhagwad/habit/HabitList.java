@@ -120,6 +120,10 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					longestStreak = 1;
 					onMostRecentStreak = false;
 										
+				} else if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) == null) {
+					
+					onMostRecentStreak = false;
+					
 				}
 				
 				for (int i = 1; i<=HabitDefinitions.HISTORY_LENGTH; i++) {

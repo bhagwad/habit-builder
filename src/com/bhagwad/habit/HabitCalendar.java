@@ -1,7 +1,9 @@
 package com.bhagwad.habit;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -109,10 +111,40 @@ public class HabitCalendar extends Activity {
 				
 				if ( isNotBlank(v)) {
 					
+					/*If it's a date greater than today's date, ignore*/
+					
+					if (greaterThanToday(v))
+						return;
+					
+					
 					toggleStar(v);
 					updateDatabaseOccurrence(v);
 					
 				}
+				
+			}
+
+			private boolean greaterThanToday(View v) {
+				TextView txtDate = (TextView) v.findViewById(R.id.textView_date);
+				TextView txtMonth = (TextView) v.findViewById(R.id.textView_month);
+				TextView txtYear = (TextView) v.findViewById(R.id.textView_year);
+				
+				String dateString = txtDate.getText() + "/" + txtMonth.getText() + "/" + txtYear.getText();
+				SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
+				Date date = null;
+				try {
+					
+					date = dateFormat.parse(dateString);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				Date todaysDate = new Date();
+				if (date.after(todaysDate))
+					return true;
+				else
+					return false;
 				
 			}
 
@@ -268,6 +300,9 @@ public class HabitCalendar extends Activity {
 			String date = getDateFromPosition(position); 
 			textViewDate.setText(date);
 			
+			if (date.equals(""))
+				return;
+			
 			if (!date.equals(""))
 				textViewDate.setVisibility(View.VISIBLE);
 			
@@ -275,6 +310,33 @@ public class HabitCalendar extends Activity {
 			
 			if (occurencesInMonths.get(fullDateString) != null)
 				star.setVisibility(View.VISIBLE);
+			
+			/*If it's today's date, color it a different color*/
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
+			
+			Date itemDate = null;
+			try {
+				itemDate = dateFormat.parse(fullDateString);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (isToday(itemDate)) {
+				v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+			}
+		}
+
+		private boolean isToday(Date date) {
+			
+			Calendar today = Calendar.getInstance();
+			today.setTime(new Date());
+			Calendar otherday = Calendar.getInstance();
+			otherday.setTime(date);
+			return otherday.get(Calendar.YEAR) == today.get(Calendar.YEAR)
+			&& otherday.get(Calendar.MONTH) == today.get(Calendar.MONTH)
+			&& otherday.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH);
 		}
 
 		private String getDateFromPosition(int position) {
