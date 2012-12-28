@@ -22,14 +22,23 @@
         android:id="@+id/textView_latest_streak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
+        android:text="Latest Streak"
+        
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView_longest_streak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
+        android:text="Longest Streak"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_latest_streak"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/search_drawable"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+         />
 
 </LinearLayout>

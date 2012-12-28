@@ -11,6 +11,7 @@ public final class HabitDefinitions {
 	public static final String TABLE_HABITS = "habits";
 	public  static final String TABLE_HABITS_RECORD = "habits_record";
 	public static final String DATE_FORMAT = "dd/MM/yyyy";
+	public static final int HABIT_LIMIT = 21;
 	
 	private HabitDefinitions() {};
 	

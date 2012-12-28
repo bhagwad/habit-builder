@@ -2,7 +2,6 @@ package com.bhagwad.habit;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -13,18 +12,17 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
@@ -162,6 +160,11 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				//Log.d("Debug", habitName + " Latest Streak: " + latestStreak + " Longest streak: " + longestStreak);
 				txtLatestStreak.setText("Latest Streak: " + mostRecentStreak);
 				txtLongestStreak.setText("Longest Streak: " + longestStreak);
+				
+				ProgressBar pbLatest = (ProgressBar) parent.findViewById(R.id.progressBar_latest_streak);
+				int percentRecentStreak = (mostRecentStreak*100)/HabitDefinitions.HABIT_LIMIT; 
+				
+				pbLatest.setProgress(percentRecentStreak);
 				
 			}
 

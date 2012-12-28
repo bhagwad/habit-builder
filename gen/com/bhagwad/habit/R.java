@@ -17,6 +17,7 @@ public final class R {
         public static final int ic_action_search=0x7f020003;
         public static final int ic_launcher=0x7f020004;
         public static final int plus=0x7f020005;
+        public static final int search_drawable=0x7f020006;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f070000;
@@ -30,8 +31,9 @@ public final class R {
         public static final int imageButton_month_previous=0x7f070001;
         public static final int imageView_star=0x7f070009;
         public static final int listview_habit=0x7f070010;
-        public static final int menu_add=0x7f070015;
-        public static final int menu_habit_delete=0x7f070016;
+        public static final int menu_add=0x7f070016;
+        public static final int menu_habit_delete=0x7f070017;
+        public static final int progressBar_latest_streak=0x7f070015;
         public static final int textView1=0x7f07000b;
         public static final int textView_date=0x7f070006;
         public static final int textView_habit_error=0x7f07000d;
