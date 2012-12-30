@@ -295,7 +295,10 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		case R.id.menu_add:
 			HabitEntry habitEntryDialog = new HabitEntry();
 			habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
-
+			break;
+		case R.id.menu_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			break;
 		}
 
 		return true;

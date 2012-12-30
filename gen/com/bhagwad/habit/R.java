@@ -32,7 +32,8 @@ public final class R {
         public static final int imageView_star=0x7f070009;
         public static final int listview_habit=0x7f070010;
         public static final int menu_add=0x7f070017;
-        public static final int menu_habit_delete=0x7f070018;
+        public static final int menu_habit_delete=0x7f070019;
+        public static final int menu_settings=0x7f070018;
         public static final int progressBar_latest_streak=0x7f070014;
         public static final int textView1=0x7f07000b;
         public static final int textView_date=0x7f070006;

@@ -3,4 +3,9 @@
           android:icon="@android:drawable/ic_menu_add"
           android:title="Add new Habit"
           android:showAsAction="ifRoom|withText" />
+    
+        <item android:id="@+id/menu_settings"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:title="Settings"
+          android:showAsAction="ifRoom|withText" />
 </menu>
