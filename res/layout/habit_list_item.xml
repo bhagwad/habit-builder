@@ -1,44 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/textView_habit_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView_habit_list_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView_habit_list_name"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/textView_latest_streak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView_habit_list_goal"
         android:text="Latest Streak"
-        
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textView_longest_streak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Longest Streak"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ProgressBar
         android:id="@+id/progressBar_latest_streak"
         style="?android:attr/progressBarStyleHorizontal"
-        android:progressDrawable="@drawable/search_drawable"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-         />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView_latest_streak"
+        android:progressDrawable="@drawable/search_drawable" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView_latest_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/progressBar_latest_streak"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/progressBar_latest_streak"
+        android:text="Latest percentage" />
+
+    <TextView
+        android:id="@+id/textView_longest_streak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/progressBar_latest_streak"
+        android:layout_marginTop="15dp"
+        android:text="Longest Streak"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

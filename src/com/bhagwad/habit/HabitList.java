@@ -20,9 +20,9 @@ import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
@@ -65,17 +65,14 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 				
 				if (view.getId() == R.id.textView_habit_list_goal) {
-					setStatistics((LinearLayout) view.getParent());
+					setStatistics((RelativeLayout) view.getParent());
 				}
 				return false;
 			}
 
-			private void setStatistics(LinearLayout parent) {
+			private void setStatistics(RelativeLayout parent) {
 				
 				TextView txtHabitName = (TextView) parent.findViewById(R.id.textView_habit_list_name);
-				TextView txtLatestStreak = (TextView) parent.findViewById(R.id.textView_latest_streak);
-				TextView txtLongestStreak = (TextView) parent.findViewById(R.id.textView_longest_streak);
-				
 				String habitName = txtHabitName.getText().toString();
 				
 				/*Create the hashmap table first with HISTORY_LENGTH entries to be sure*/
@@ -157,7 +154,9 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					
 				}
 				
-				//Log.d("Debug", habitName + " Latest Streak: " + latestStreak + " Longest streak: " + longestStreak);
+				TextView txtLatestStreak = (TextView) parent.findViewById(R.id.textView_latest_streak);
+				TextView txtLongestStreak = (TextView) parent.findViewById(R.id.textView_longest_streak);
+				
 				txtLatestStreak.setText("Latest Streak: " + mostRecentStreak);
 				txtLongestStreak.setText("Longest Streak: " + longestStreak);
 				
@@ -165,6 +164,9 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				int percentRecentStreak = (mostRecentStreak*100)/HabitDefinitions.HABIT_LIMIT; 
 				
 				pbLatest.setProgress(percentRecentStreak);
+				
+				TextView txtLatestPercent = (TextView) parent.findViewById(R.id.textView_latest_percent);
+				txtLatestPercent.setText(percentRecentStreak + "%");
 				
 			}
 

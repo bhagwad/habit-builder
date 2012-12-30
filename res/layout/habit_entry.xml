@@ -21,7 +21,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/editText_habit_name"
         android:hint="Habit Goal"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine|textCapSentences" />
     
     <TextView
         android:id="@+id/textView_habit_error"
