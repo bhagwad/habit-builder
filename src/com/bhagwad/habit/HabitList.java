@@ -10,8 +10,10 @@ import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -154,6 +156,9 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					
 				}
 				
+				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(HabitList.this); 
+				String habitLength = sharedPref.getString("habit_length_days", "21"); 
+				
 				TextView txtLatestStreak = (TextView) parent.findViewById(R.id.textView_latest_streak);
 				TextView txtLongestStreak = (TextView) parent.findViewById(R.id.textView_longest_streak);
 				
@@ -161,7 +166,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				txtLongestStreak.setText("Longest Streak: " + longestStreak);
 				
 				ProgressBar pbLatest = (ProgressBar) parent.findViewById(R.id.progressBar_latest_streak);
-				int percentRecentStreak = (mostRecentStreak*100)/HabitDefinitions.HABIT_LIMIT; 
+				int percentRecentStreak = (mostRecentStreak*100)/Integer.valueOf(habitLength); 
 				
 				pbLatest.setProgress(percentRecentStreak);
 				
@@ -297,7 +302,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 			habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
 			break;
 		case R.id.menu_settings:
-			startActivity(new Intent(this, SettingsActivity.class));
+			startActivityForResult(new Intent(this, SettingsActivity.class), 1);
 			break;
 		}
 

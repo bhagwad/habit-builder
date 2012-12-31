@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="21"
+        android:inputType="number"
+        android:key="habit_length_days"
+        android:summary="Number of Days for Habit to be formed"
+        android:title="Habit Goal Length" />
+    
+</PreferenceScreen>
