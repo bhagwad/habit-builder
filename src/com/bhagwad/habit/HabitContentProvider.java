@@ -16,7 +16,7 @@ import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 public class HabitContentProvider extends ContentProvider {
 
 	private static final String DATABASE_NAME = "habits.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	private static final UriMatcher sUriMatcher;
 	private static final int HABIT_LIST = 0;
@@ -53,6 +53,7 @@ public class HabitContentProvider extends ContentProvider {
 
 		}
 		
+		
 		@Override
 		public void onOpen(SQLiteDatabase db) {
 			// TODO Auto-generated method stub
@@ -66,7 +67,9 @@ public class HabitContentProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
+			
+			db.execSQL("ALTER TABLE " + HabitDefinitions.TABLE_HABITS + " "
+					+ "ADD COLUMN " + HabitColumns.HABIT_LONGEST + " INTEGER");
 
 		}
 
@@ -177,8 +180,13 @@ public class HabitContentProvider extends ContentProvider {
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		String mTableName = setTableName(uri);
+		
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		int rowsAffected = db.update(mTableName, values, selection, selectionArgs);
+		
+		return rowsAffected;
 	}
 
 	static {

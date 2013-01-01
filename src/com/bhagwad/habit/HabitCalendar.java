@@ -165,11 +165,12 @@ public class HabitCalendar extends Activity {
 		TextView textViewYear = (TextView) v.findViewById(R.id.textView_year);
 		
 		/*Create the date string. We add one to the month because January returns 0 insted of 1*/
-		
-		
+
 		String dateText = textViewDate.getText().toString()+"/"+textViewMonth.getText().toString() + "/" + textViewYear.getText().toString(); 
 		
 		/*If the star is visible, we enter a date. If not, we delete it*/
+		
+		/*Update the occurences table and then the Habit table with the longest length*/
 		
 		if (star.getVisibility() == View.VISIBLE) {
 			ContentValues cv = new ContentValues();
@@ -179,6 +180,14 @@ public class HabitCalendar extends Activity {
 		} else {
 			getContentResolver().delete(HabitColumns.CONTENT_URI_RECORDS, HabitColumns.HABIT_NAME + "=? AND " + HabitColumns.HABIT_OCCURRENCE + "=?", new String[] {habitName, dateText});
 		}
+		
+		int statisticsArray[] = Utilities.getArrayStatistics(habitName, this);
+		int longestStreak = statisticsArray[0];
+		
+		ContentValues cv = new ContentValues();
+		cv.put(HabitColumns.HABIT_LONGEST, longestStreak);
+		getContentResolver().update(HabitColumns.CONTENT_URI_HABITS, cv, HabitColumns.HABIT_NAME + "=?", new String[] {habitName});
+		
 	}
 
 	protected void toggleStar(View v) {

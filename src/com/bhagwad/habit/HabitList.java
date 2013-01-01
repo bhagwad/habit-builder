@@ -234,6 +234,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		ContentValues cv = new ContentValues();
 		cv.put(HabitColumns.HABIT_NAME, mHabitName);
 		cv.put(HabitColumns.HABIT_GOAL, mHabitGoal);
+		cv.put(HabitColumns.HABIT_LONGEST, 0);
 		getContentResolver().insert(HabitColumns.CONTENT_URI_HABITS, cv);
 
 	}
