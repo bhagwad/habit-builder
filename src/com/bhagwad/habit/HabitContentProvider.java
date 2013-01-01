@@ -35,7 +35,8 @@ public class HabitContentProvider extends ContentProvider {
 			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" 
 			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
 			+ HabitColumns.HABIT_NAME + " TEXT, " 
-			+ HabitColumns.HABIT_GOAL + " TEXT, " 
+			+ HabitColumns.HABIT_GOAL + " TEXT, "
+			+ HabitColumns.HABIT_LONGEST + " TEXT, " 
 			+ "UNIQUE ("+HabitColumns.HABIT_NAME
 			+ ") ON CONFLICT IGNORE"
 			+ ");");
