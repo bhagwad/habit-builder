@@ -16,7 +16,7 @@ import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 public class HabitContentProvider extends ContentProvider {
 
 	private static final String DATABASE_NAME = "habits.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final UriMatcher sUriMatcher;
 	private static final int HABIT_LIST = 0;
@@ -36,7 +36,8 @@ public class HabitContentProvider extends ContentProvider {
 			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
 			+ HabitColumns.HABIT_NAME + " TEXT, " 
 			+ HabitColumns.HABIT_GOAL + " TEXT, "
-			+ HabitColumns.HABIT_LONGEST + " TEXT, " 
+			+ HabitColumns.HABIT_LONGEST + " INTEGER, "
+			+ HabitColumns.HABIT_LATEST + " INTEGER, "
 			+ "UNIQUE ("+HabitColumns.HABIT_NAME
 			+ ") ON CONFLICT IGNORE"
 			+ ");");
@@ -69,7 +70,7 @@ public class HabitContentProvider extends ContentProvider {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			
 			db.execSQL("ALTER TABLE " + HabitDefinitions.TABLE_HABITS + " "
-					+ "ADD COLUMN " + HabitColumns.HABIT_LONGEST + " INTEGER");
+					+ "ADD COLUMN " + HabitColumns.HABIT_LATEST + " INTEGER");
 
 		}
 

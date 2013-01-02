@@ -86,10 +86,11 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				 * be sure
 				 */
 
-				int statisticsArray[] = Utilities.getArrayStatistics(habitName, HabitList.this);
-
-				int longestStreak = statisticsArray[0];
-				int mostRecentStreak = statisticsArray[1];
+				
+				Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_HABITS, new String[] {HabitColumns.HABIT_LONGEST, HabitColumns.HABIT_LATEST}, HabitColumns.HABIT_NAME + "=?", new String[] {habitName}, null);
+				c.moveToFirst();
+				int longestStreak = c.getInt(c.getColumnIndexOrThrow(HabitColumns.HABIT_LONGEST));
+				int mostRecentStreak = c.getInt(c.getColumnIndexOrThrow(HabitColumns.HABIT_LATEST));
 
 				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(HabitList.this);
 				String habitLength = sharedPref.getString("habit_length_days", "21");

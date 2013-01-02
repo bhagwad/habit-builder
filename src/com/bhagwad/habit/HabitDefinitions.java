@@ -23,6 +23,7 @@ public final class HabitDefinitions {
 		public static final String HABIT_GOAL = "habit_goal";
 		public static final String HABIT_OCCURRENCE = "habit_occurrence";
 		public static final String HABIT_LONGEST = "habit_longest";
+		public static final String HABIT_LATEST = "habit_latest";
 		
 		public static final Uri CONTENT_URI_HABITS = Uri.parse("content://" + AUTHORITY + "/" + TABLE_HABITS);
 		public static final Uri CONTENT_URI_RECORDS = Uri.parse("content://" + AUTHORITY + "/" + TABLE_HABITS_RECORD);

@@ -19,12 +19,17 @@ public class Utilities {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
 		Calendar todaysDateCal = Calendar.getInstance();
+		
+		/*Get the longest streak so far*/
+		
+		Cursor c = ctxt.getContentResolver().query(HabitColumns.CONTENT_URI_HABITS, new String[] {HabitColumns.HABIT_LONGEST}, HabitColumns.HABIT_NAME + "=?", new String[] {habitName}, null);
+		c.moveToFirst();
 
 		/* Iterate through previous dates one by one going back HISTORY_LENGTH */
 
 		int mostRecentStreak = 0;
 		boolean onMostRecentStreak = true;
-		int longestStreak = 0;
+		int longestStreak = c.getInt(c.getColumnIndexOrThrow(HabitColumns.HABIT_LONGEST));
 		int currentStreak = 0;
 		boolean isDateChecked;
 
@@ -40,19 +45,25 @@ public class Utilities {
 
 		if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) != null) {
 			mostRecentStreak = 1;
-			longestStreak = 1;
 			currentStreak = 1;
+			if (longestStreak == 0)
+				longestStreak = 1;
 
 		} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) != null) {
 
 			mostRecentStreak = 2;
-			longestStreak = 2;
 			currentStreak = 2;
+			if (longestStreak < 2)
+				longestStreak = 2;
+
+			
 
 		} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) == null) {
 
 			mostRecentStreak = 1;
-			longestStreak = 1;
+			if (longestStreak == 0)
+				longestStreak = 1;
+			//longestStreak = 1;
 			onMostRecentStreak = false;
 
 		} else if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) == null) {
@@ -60,36 +71,50 @@ public class Utilities {
 			onMostRecentStreak = false;
 
 		}
+		
 
-		for (int i = 1; i <= HabitDefinitions.HISTORY_LENGTH; i++) {
-
+		todaysDateCal.add(Calendar.DATE, -1);
+		String currentDate = dateFormat.format(todaysDateCal.getTime());
+		
+		while (hashOccurences.get(currentDate) != null) {
+			mostRecentStreak++;
+			
+			if (mostRecentStreak > longestStreak)
+				longestStreak = mostRecentStreak;
+			
 			todaysDateCal.add(Calendar.DATE, -1);
-			String currentDate = dateFormat.format(todaysDateCal.getTime());
-
-			if (hashOccurences.get(currentDate) != null)
-				isDateChecked = true;
-			else
-				isDateChecked = false;
-
-			/* The statistics are calculated here */
-
-			if (isDateChecked == true) {
-
-				if (onMostRecentStreak == true)
-					mostRecentStreak++;
-
-				currentStreak++;
-
-				if (currentStreak > longestStreak)
-					longestStreak = currentStreak;
-
-			} else {
-
-				currentStreak = 0;
-				onMostRecentStreak = false;
-			}
-
+			currentDate = dateFormat.format(todaysDateCal.getTime());
 		}
+
+//		for (int i = 1; i <= HabitDefinitions.HISTORY_LENGTH; i++) {
+//
+//			todaysDateCal.add(Calendar.DATE, -1);
+//			String currentDate = dateFormat.format(todaysDateCal.getTime());
+//
+//			if (hashOccurences.get(currentDate) != null)
+//				isDateChecked = true;
+//			else
+//				isDateChecked = false;
+//
+//			/* The statistics are calculated here */
+//
+//			if (isDateChecked == true) {
+//
+//				if (onMostRecentStreak == true)
+//					mostRecentStreak++;
+//
+//				currentStreak++;
+//
+//				if (currentStreak > longestStreak)
+//					longestStreak = currentStreak;
+//
+//			} else {
+//
+//				currentStreak = 0;
+//				onMostRecentStreak = false;
+//			}
+//
+//		}
 
 		return new int[] { longestStreak, mostRecentStreak };
 

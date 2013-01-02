@@ -2,15 +2,19 @@ package com.bhagwad.habit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
 import android.app.Activity;
+import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -170,7 +174,9 @@ public class HabitCalendar extends Activity {
 		
 		/*If the star is visible, we enter a date. If not, we delete it*/
 		
-		/*Update the occurences table and then the Habit table with the longest length*/
+		/*Update the occurences table and then the Habit table with the longest length
+		 * and latest length. Introduces a bit of redundancy but saves computing time
+		 * Use batch operations to maintain consistency */
 		
 		if (star.getVisibility() == View.VISIBLE) {
 			ContentValues cv = new ContentValues();
@@ -183,10 +189,13 @@ public class HabitCalendar extends Activity {
 		
 		int statisticsArray[] = Utilities.getArrayStatistics(habitName, this);
 		int longestStreak = statisticsArray[0];
+		int latestStreak = statisticsArray[1];
 		
 		ContentValues cv = new ContentValues();
 		cv.put(HabitColumns.HABIT_LONGEST, longestStreak);
+		cv.put(HabitColumns.HABIT_LATEST, latestStreak);
 		getContentResolver().update(HabitColumns.CONTENT_URI_HABITS, cv, HabitColumns.HABIT_NAME + "=?", new String[] {habitName});
+		
 		
 	}
 
