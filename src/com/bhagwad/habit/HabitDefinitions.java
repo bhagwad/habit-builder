@@ -10,8 +10,11 @@ public final class HabitDefinitions {
 	public static final int HISTORY_LENGTH = 60;	
 	public static final String TABLE_HABITS = "habits";
 	public  static final String TABLE_HABITS_RECORD = "habits_record";
-	public static final String DATE_FORMAT = "dd/MM/yyyy";
+	public static final String DATE_FORMAT = "d/M/yyyy";
 	public static final int HABIT_LIMIT = 21;
+	public static final int PREVIOUS_MONTH = 0;
+	public static final int NEXT_MONTH = 1;
+	
 	
 	private HabitDefinitions() {};
 	

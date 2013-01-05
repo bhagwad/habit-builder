@@ -5,18 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -87,6 +90,8 @@ public class HabitCalendar extends Activity {
 				mCalendar.add(Calendar.MONTH, -1);
 				setUpDates();
 				setUpMonthName();
+				setAnimation(HabitDefinitions.PREVIOUS_MONTH);
+				
 			}
 		});
 
@@ -96,10 +101,33 @@ public class HabitCalendar extends Activity {
 				mCalendar.add(Calendar.MONTH, 1);
 				setUpDates();
 				setUpMonthName();
-
+				
+				setAnimation(HabitDefinitions.NEXT_MONTH);
+				
 			}
 		});
 
+	}
+	
+	private void setAnimation(int navigation) {
+		
+		AnimationSet mAnimationSet = new AnimationSet(true);
+		mAnimationSet.setDuration(400);
+		TranslateAnimation mTranslateAnimation = null;
+		
+		switch (navigation) {
+		case HabitDefinitions.NEXT_MONTH:
+			mTranslateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+			break;
+		case HabitDefinitions.PREVIOUS_MONTH:
+			mTranslateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+		}
+		
+		
+		mTranslateAnimation.setDuration(1500);
+		mAnimationSet.addAnimation(mTranslateAnimation);
+		mHabitGrid.startAnimation(mAnimationSet);
+		
 	}
 
 	private void setUpDates() {
