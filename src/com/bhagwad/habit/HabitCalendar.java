@@ -11,11 +11,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -39,6 +43,7 @@ public class HabitCalendar extends Activity {
 	GridView mGridViewWeekdays;
 	TextView monthName;
 	String habitName;
+	private GestureDetector mDetector;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,21 @@ public class HabitCalendar extends Activity {
 		else
 			mCalendar = Calendar.getInstance();
 		
+		mDetector = new GestureDetector(this, new SlideGestureListener());
+		
 		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
+		
+		/*Sets the listener and passes the event to the gesture detector. Returns false so
+		that normal handling can still proceed from there*/
+		
+		mHabitGrid.setOnTouchListener(new OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				mDetector.onTouchEvent(event);
+				return false;
+			}
+		});
 		monthName = (TextView) findViewById(R.id.textView_monthname);
 		
 		getActionBar().setTitle(habitName);
@@ -87,28 +105,43 @@ public class HabitCalendar extends Activity {
 		previousMonth.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				mCalendar.add(Calendar.MONTH, -1);
-				setUpDates();
-				setUpMonthName();
-				setAnimation(HabitDefinitions.PREVIOUS_MONTH);
-				
+				changeCalendar(HabitDefinitions.PREVIOUS_MONTH);
+	
 			}
 		});
 
 		nextMonth.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				mCalendar.add(Calendar.MONTH, 1);
-				setUpDates();
-				setUpMonthName();
+				changeCalendar(HabitDefinitions.NEXT_MONTH);
 				
-				setAnimation(HabitDefinitions.NEXT_MONTH);
 				
 			}
 		});
 
 	}
 	
+	protected void changeCalendar(int navigation) {
+		
+		if (navigation == HabitDefinitions.PREVIOUS_MONTH) {
+			
+			mCalendar.add(Calendar.MONTH, -1);
+			setUpDates();
+			setUpMonthName();
+			setAnimation(HabitDefinitions.PREVIOUS_MONTH);
+			
+		} else {
+			
+			mCalendar.add(Calendar.MONTH, 1);
+			setUpDates();
+			setUpMonthName();
+			
+			setAnimation(HabitDefinitions.NEXT_MONTH);
+			
+		}
+		
+	}
+
 	private void setAnimation(int navigation) {
 		
 		AnimationSet mAnimationSet = new AnimationSet(true);
@@ -406,5 +439,23 @@ public class HabitCalendar extends Activity {
 			return tempCal.get(Calendar.DAY_OF_WEEK) - 1;
 		}
 
+	}
+	
+	class SlideGestureListener extends GestureDetector.SimpleOnGestureListener {
+		
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			if (velocityX < 0)
+				changeCalendar(HabitDefinitions.NEXT_MONTH);
+			else
+				changeCalendar(HabitDefinitions.PREVIOUS_MONTH);
+			
+			return true;
+		}
 	}
 }
