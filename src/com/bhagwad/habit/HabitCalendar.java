@@ -43,8 +43,7 @@ public class HabitCalendar extends Activity {
 	GridView mGridViewWeekdays;
 	TextView monthName;
 	String habitName;
-	private GestureDetector mDetector;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,21 +56,9 @@ public class HabitCalendar extends Activity {
 		else
 			mCalendar = Calendar.getInstance();
 		
-		mDetector = new GestureDetector(this, new SlideGestureListener());
-		
 		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
-		
-		/*Sets the listener and passes the event to the gesture detector. Returns false so
-		that normal handling can still proceed from there*/
-		
-		mHabitGrid.setOnTouchListener(new OnTouchListener() {
-			
-			public boolean onTouch(View v, MotionEvent event) {
-				mDetector.onTouchEvent(event);
-				return false;
-			}
-		});
+
 		monthName = (TextView) findViewById(R.id.textView_monthname);
 		
 		getActionBar().setTitle(habitName);
@@ -160,6 +147,7 @@ public class HabitCalendar extends Activity {
 		mTranslateAnimation.setDuration(1500);
 		mAnimationSet.addAnimation(mTranslateAnimation);
 		mHabitGrid.startAnimation(mAnimationSet);
+		mHabitGrid.setX(0);
 		
 	}
 
@@ -439,23 +427,5 @@ public class HabitCalendar extends Activity {
 			return tempCal.get(Calendar.DAY_OF_WEEK) - 1;
 		}
 
-	}
-	
-	class SlideGestureListener extends GestureDetector.SimpleOnGestureListener {
-		
-		@Override
-		public boolean onDown(MotionEvent e) {
-			return true;
-		}
-		
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (velocityX < 0)
-				changeCalendar(HabitDefinitions.NEXT_MONTH);
-			else
-				changeCalendar(HabitDefinitions.PREVIOUS_MONTH);
-			
-			return true;
-		}
 	}
 }
