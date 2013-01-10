@@ -21,8 +21,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -232,10 +234,31 @@ public class HabitCalendar extends Activity {
 
 	protected void toggleStar(View v) {
 		ImageView star = (ImageView) v.findViewById(R.id.imageView_star);
-		if (star.getVisibility() == View.INVISIBLE)
+		if (star.getVisibility() == View.INVISIBLE) {
 			star.setVisibility(View.VISIBLE);
-		else
-			star.setVisibility(View.INVISIBLE);
+			doAnimations(star);
+		}
+		else {
+			star.clearAnimation();
+			star.setVisibility(View.INVISIBLE);	
+		}
+	}
+	
+	private void doAnimations(View mViewToScale) {
+
+		ScaleAnimation mScaleAnimation = new ScaleAnimation(1, 3, 1, 3,
+				mViewToScale.getWidth() / 2,
+				mViewToScale.getHeight() / 2);
+		mScaleAnimation
+				.setInterpolator(new AccelerateInterpolator(2.0f));
+		mScaleAnimation.setFillAfter(true);
+		mScaleAnimation.setDuration(350);
+
+		mScaleAnimation.setRepeatCount(1);
+		mScaleAnimation.setRepeatMode(Animation.REVERSE);
+
+		mViewToScale.setAnimation(mScaleAnimation);
+
 	}
 
 	private void setUpMonthName() {
