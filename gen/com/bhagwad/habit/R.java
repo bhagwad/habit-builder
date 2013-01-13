@@ -31,10 +31,11 @@ public final class R {
         public static final int imageButton_month_previous=0x7f080001;
         public static final int imageView_star=0x7f080009;
         public static final int listview_habit=0x7f080010;
-        public static final int menu_add=0x7f080017;
-        public static final int menu_habit_delete=0x7f080019;
-        public static final int menu_settings=0x7f080018;
+        public static final int menu_add=0x7f08001a;
+        public static final int menu_habit_delete=0x7f08001c;
+        public static final int menu_settings=0x7f08001b;
         public static final int progressBar_latest_streak=0x7f080014;
+        public static final int progressBar_widget_latest_streak=0x7f080018;
         public static final int textView1=0x7f08000b;
         public static final int textView_date=0x7f080006;
         public static final int textView_habit_error=0x7f08000d;
@@ -45,6 +46,8 @@ public final class R {
         public static final int textView_longest_streak=0x7f080016;
         public static final int textView_month=0x7f080007;
         public static final int textView_monthname=0x7f080003;
+        public static final int textView_widget_habit_name=0x7f080017;
+        public static final int textView_widget_percentage=0x7f080019;
         public static final int textView_year=0x7f080008;
     }
     public static final class layout {
@@ -53,6 +56,7 @@ public final class R {
         public static final int habit_entry=0x7f030002;
         public static final int habit_list=0x7f030003;
         public static final int habit_list_item=0x7f030004;
+        public static final int habit_widget_layout=0x7f030005;
     }
     public static final class menu {
         public static final int habit_list_action_bar=0x7f070000;
@@ -69,6 +73,7 @@ public final class R {
         public static final int AppTheme=0x7f060000;
     }
     public static final class xml {
-        public static final int settings=0x7f040000;
+        public static final int habit_widget_provider_info=0x7f040000;
+        public static final int settings=0x7f040001;
     }
 }

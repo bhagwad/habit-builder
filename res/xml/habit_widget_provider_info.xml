@@ -1,0 +1,7 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="200dp"
+    android:minHeight="100dp"
+    android:updatePeriodMillis="0"
+    android:configure="com.bhagwad.habit.HabitWidgetConfiguration"
+    android:initialLayout="@layout/habit_widget_layout">
+</appwidget-provider>
