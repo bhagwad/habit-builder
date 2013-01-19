@@ -35,6 +35,11 @@
             android:name=".SettingsActivity"
             android:label="@string/menu_settings" >
         </activity>
+        <activity android:name=".HabitWidgetConfiguration" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name=".HabitWidgetProvider" >
             <intent-filter>
