@@ -23,6 +23,7 @@ public final class R {
         public static final int RelativeLayout1=0x7f080000;
         public static final int button_habit_cancel=0x7f08000f;
         public static final int button_habit_save=0x7f08000e;
+        public static final int button_habit_spinner_cancel=0x7f080019;
         public static final int button_habit_spinner_save=0x7f080018;
         public static final int editText_habit_name=0x7f08000a;
         public static final int edittext_habit_goal=0x7f08000c;
@@ -32,11 +33,11 @@ public final class R {
         public static final int imageButton_month_previous=0x7f080001;
         public static final int imageView_star=0x7f080009;
         public static final int listview_habit=0x7f080010;
-        public static final int menu_add=0x7f08001c;
-        public static final int menu_habit_delete=0x7f08001e;
-        public static final int menu_settings=0x7f08001d;
+        public static final int menu_add=0x7f08001d;
+        public static final int menu_habit_delete=0x7f08001f;
+        public static final int menu_settings=0x7f08001e;
         public static final int progressBar_latest_streak=0x7f080014;
-        public static final int progressBar_widget_latest_streak=0x7f08001a;
+        public static final int progressBar_widget_latest_streak=0x7f08001b;
         public static final int spinner_habit_list=0x7f080017;
         public static final int textView1=0x7f08000b;
         public static final int textView_date=0x7f080006;
@@ -48,8 +49,8 @@ public final class R {
         public static final int textView_longest_streak=0x7f080016;
         public static final int textView_month=0x7f080007;
         public static final int textView_monthname=0x7f080003;
-        public static final int textView_widget_habit_name=0x7f080019;
-        public static final int textView_widget_percentage=0x7f08001b;
+        public static final int textView_widget_habit_name=0x7f08001a;
+        public static final int textView_widget_percentage=0x7f08001c;
         public static final int textView_year=0x7f080008;
     }
     public static final class layout {
