@@ -77,84 +77,10 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				TextView txtHabitName = (TextView) parent.findViewById(R.id.textView_habit_list_name);
 				String habitName = txtHabitName.getText().toString();
 				
-				/*Create the hashmap table first with HISTORY_LENGTH entries to be sure*/
-				HashMap<String, Boolean> hashOccurences = generateHashMap(habitName);
+				int[] streakArray = Utilities.getArrayStatistics(habitName, HabitList.this);
 				
-				SimpleDateFormat dateFormat = new SimpleDateFormat(HabitDefinitions.DATE_FORMAT);
-				Calendar todaysDateCal = Calendar.getInstance();
-				
-				/*Iterate through previous dates one by one going back HISTORY_LENGTH*/
-				
-				int mostRecentStreak = 0;
-				boolean onMostRecentStreak = true;
-				int longestStreak = 0;
-				int currentStreak = 0;
-				boolean isDateChecked;
-				
-				/*Create a specific string for yesterday's date to handle the special cases of
-				 *yesterday and today. It's messy but our expectations seem arbitrary so no logic
-				 *to put into it */
-				
-				String todaysDate = dateFormat.format(todaysDateCal.getTime());
-				todaysDateCal.add(Calendar.DATE, -1);
-				String yesterdaysDate = dateFormat.format(todaysDateCal.getTime());
-				
-				if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) != null)
-				{
-					mostRecentStreak = 1;
-					longestStreak = 1;
-					currentStreak = 1;
-					
-				} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) != null) {
-					
-					mostRecentStreak = 2;
-					longestStreak = 2;
-					currentStreak = 2;
-					
-				} else if (hashOccurences.get(todaysDate) != null && hashOccurences.get(yesterdaysDate) == null) {
-					
-					mostRecentStreak = 1;
-					longestStreak = 1;
-					onMostRecentStreak = false;
-										
-				} else if (hashOccurences.get(todaysDate) == null && hashOccurences.get(yesterdaysDate) == null) {
-					
-					onMostRecentStreak = false;
-					
-				}
-				
-				for (int i = 1; i<=HabitDefinitions.HISTORY_LENGTH; i++) {
-					
-					todaysDateCal.add(Calendar.DATE, -1);
-					String currentDate = dateFormat.format(todaysDateCal.getTime());
-					
-					if (hashOccurences.get(currentDate) != null)
-						isDateChecked = true;
-					else
-						isDateChecked = false;
-					
-					/*The statistics are calculated here*/
-					
-					if (isDateChecked == true) {
-						
-						if (onMostRecentStreak == true)
-							mostRecentStreak++;
-						
-						currentStreak++;
-						
-						if (currentStreak > longestStreak)
-							longestStreak = currentStreak;
-						
-					} else {
-						
-						currentStreak = 0;
-						onMostRecentStreak = false;
-						
-						
-						
-					}
-					
-				}
+				int longestStreak = streakArray[0];
+				int mostRecentStreak = streakArray[1];
 				
 				SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(HabitList.this); 
 				String habitLength = sharedPref.getString("habit_length_days", "21"); 
@@ -175,25 +101,6 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 				
 			}
 
-			private HashMap<String, Boolean> generateHashMap(String habitName) {
-				
-				HashMap<String, Boolean> hashOccurences = new HashMap<String, Boolean>();
-				
-				Cursor c = getContentResolver().query(HabitColumns.CONTENT_URI_RECORDS, new String[] {HabitColumns.HABIT_OCCURRENCE}, HabitColumns.HABIT_NAME + "=?", new String[] {habitName}, HabitColumns.HABIT_OCCURRENCE + " LIMIT " + HabitDefinitions.HISTORY_LENGTH);
-				
-				if (c.moveToFirst()) {
-					
-					while (!c.isAfterLast()) {
-						
-						String entry = c.getString(c.getColumnIndexOrThrow(HabitColumns.HABIT_OCCURRENCE));
-						hashOccurences.put(entry, true);
-						c.moveToNext();
-					}
-
-				}
-				
-				return hashOccurences;
-			}
 		});
 		listViewHabit.setAdapter(mAdapter);
 

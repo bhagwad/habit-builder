@@ -10,9 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-
 import com.bhagwad.habit.HabitDefinitions.HabitColumns;
-import com.bhagwad.tennis.Utilities;
 
 public class HabitWidgetConfiguration extends Activity {
 
@@ -45,7 +43,7 @@ public class HabitWidgetConfiguration extends Activity {
 				/*The spinner returns a cursor at the given position*/
 				Cursor c = (Cursor) mHabitSpinner.getSelectedItem();
 				String habitName = c.getString(c.getColumnIndexOrThrow(HabitColumns.HABIT_NAME));
-				Utilities.updateWidget(this, mAppWidgetId, habitName);
+				Utilities.updateWidget(this, mAppWidgetId, habitName, HabitWidgetConfiguration.this);
 				
 
 			}
