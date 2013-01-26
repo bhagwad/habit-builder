@@ -18,7 +18,7 @@ import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 
 public class Utilities {
 
-	public static void updateWidget(OnClickListener onClickListener, int mAppWidgetId, String habitName, Context ctxt) {
+	public static void updateWidget(int mAppWidgetId, String habitName, Context ctxt) {
 		
 		int[] streakArray = Utilities.getArrayStatistics(habitName, ctxt);
 		int longestStreak = streakArray[0];
@@ -31,6 +31,10 @@ public class Utilities {
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctxt); 
 		String habitLength = sharedPref.getString("habit_length_days", "21");
+		
+		/*Input the habit name into the shared preferences linked with the appwidgetid*/
+		
+		saveTheName(ctxt, mAppWidgetId, habitName);
 		
 		int percentRecentStreak = (mostRecentStreak*100)/Integer.valueOf(habitLength);
 		
@@ -62,7 +66,7 @@ public class Utilities {
 
 		/*
 		 * Create a specific string for yesterday's date to handle the special
-		 * cases ofyesterday and today. It's messy but our expectations seem
+		 * cases of yesterday and today. It's messy but our expectations seem
 		 * arbitrary so no logicto put into it
 		 */
 
@@ -147,6 +151,14 @@ public class Utilities {
 		}
 
 		return hashOccurences;
+	}
+	
+	private static void saveTheName(Context ctxt, int mAppWidgetId, String text) {
+		
+		SharedPreferences.Editor prefs = ctxt.getSharedPreferences(HabitWidgetConfiguration.PREFS, 0).edit();
+		prefs.putString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+mAppWidgetId, text);
+		prefs.commit();
+		
 	}
 
 }
