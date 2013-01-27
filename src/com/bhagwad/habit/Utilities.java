@@ -40,7 +40,7 @@ public class Utilities {
 		
 		views.setTextViewText(R.id.textView_widget_habit_name, habitName);
 		views.setProgressBar(R.id.progressBar_widget_latest_streak, 100, percentRecentStreak, false);
-		views.setTextViewText(R.id.textView_widget_habit_name, String.valueOf(percentRecentStreak));
+		views.setTextViewText(R.id.textView_widget_percentage, String.valueOf(percentRecentStreak)+"%");
 		
 		AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(ctxt);
 		views.setOnClickPendingIntent(R.id.widget_container, pi);
