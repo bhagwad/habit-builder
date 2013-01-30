@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_container"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_background"
     android:orientation="vertical"
@@ -15,14 +15,24 @@
         android:layout_alignParentTop="true"
         android:text="Habit Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+        <TextView
+        android:id="@+id/textView_widget_latest_streak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Latest streak"
+        android:layout_below="@+id/textView_widget_habit_name"
+        android:textSize="15dp"
+        android:textColor="@android:color/white" />
 
     <ProgressBar
         android:id="@+id/progressBar_widget_latest_streak"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="10dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView_widget_habit_name"
+        android:layout_below="@+id/textView_widget_latest_streak"
         android:progressDrawable="@drawable/search_drawable" />
 
     <TextView

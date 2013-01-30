@@ -41,6 +41,7 @@ public class Utilities {
 		views.setTextViewText(R.id.textView_widget_habit_name, habitName);
 		views.setProgressBar(R.id.progressBar_widget_latest_streak, 100, percentRecentStreak, false);
 		views.setTextViewText(R.id.textView_widget_percentage, String.valueOf(percentRecentStreak)+"%");
+		views.setTextViewText(R.id.textView_widget_latest_streak, "Latest Streak: " + mostRecentStreak);
 		
 		AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(ctxt);
 		views.setOnClickPendingIntent(R.id.widget_container, pi);
@@ -155,8 +156,12 @@ public class Utilities {
 	
 	private static void saveTheName(Context ctxt, int mAppWidgetId, String text) {
 		
+		/*Associate the widget id with the habit name and the habit name with the widget id
+		That way we can update the widget with either one*/
+		
 		SharedPreferences.Editor prefs = ctxt.getSharedPreferences(HabitWidgetConfiguration.PREFS, 0).edit();
 		prefs.putString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+mAppWidgetId, text);
+		prefs.putString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+text, String.valueOf(mAppWidgetId));
 		prefs.commit();
 		
 	}

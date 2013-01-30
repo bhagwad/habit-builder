@@ -9,6 +9,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -169,6 +170,12 @@ public class HabitCalendar extends Activity {
 					
 					toggleStar(v);
 					updateDatabaseOccurrence(v);
+					
+					/*Update the widget*/
+					
+					SharedPreferences prefs = getSharedPreferences(HabitWidgetConfiguration.PREFS, 0);
+					int mAppWidgetId = Integer.valueOf(prefs.getString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+habitName, null));
+					Utilities.updateWidget(mAppWidgetId, habitName, HabitCalendar.this);
 					
 				}
 				
