@@ -174,8 +174,11 @@ public class HabitCalendar extends Activity {
 					/*Update the widget*/
 					
 					SharedPreferences prefs = getSharedPreferences(HabitWidgetConfiguration.PREFS, 0);
-					int mAppWidgetId = Integer.valueOf(prefs.getString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+habitName, null));
-					Utilities.updateWidget(mAppWidgetId, habitName, HabitCalendar.this);
+					String widgetString = prefs.getString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+habitName, null);
+					if (widgetString != null) {
+						int mAppWidgetId = Integer.valueOf(widgetString);
+						Utilities.updateWidget(mAppWidgetId, habitName, HabitCalendar.this);	
+					}
 					
 				}
 				
