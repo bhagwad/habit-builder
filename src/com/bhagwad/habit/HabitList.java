@@ -1,9 +1,5 @@
 package com.bhagwad.habit;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentValues;
@@ -33,6 +29,10 @@ import com.bhagwad.habit.HabitDefinitions.HabitColumns;
 import com.bhagwad.habit.HabitEntry.HabitEntryListener;
 
 public class HabitList extends Activity implements HabitEntryListener, LoaderCallbacks<Cursor> {
+	
+	public static final int CREATE_HABIT = 0;
+	public static final int EDIT_HABIT = 1;
+	public static final String CREATE_EDIT = "create_edit";
 	
 	SimpleCursorAdapter mAdapter;
 	ListView listViewHabit;
@@ -161,7 +161,20 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					/*
 					 * We delete longSelectedId which we set when we first came in
 					 */ 
-					getContentResolver().delete(HabitColumns.CONTENT_URI_HABITS, HabitColumns._ID + "=?", new String[] {String.valueOf(longSelectedId)});	
+					getContentResolver().delete(HabitColumns.CONTENT_URI_HABITS, HabitColumns._ID + "=?", new String[] {String.valueOf(longSelectedId)});
+					break;
+					
+				case R.id.menu_habit_edit:
+					
+					Bundle args = new Bundle();
+					args.putInt(CREATE_EDIT, EDIT_HABIT);
+					args.putLong(HabitColumns._ID, longSelectedId);
+					
+					HabitEntry habitEntryDialog = new HabitEntry();
+					habitEntryDialog.setArguments(args);
+					habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
+
+					break;
 					
 				}
 			
@@ -205,9 +218,15 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 		switch (item.getItemId()) {
 
 		case R.id.menu_add:
+			
+			Bundle args = new Bundle();
+			args.putInt(CREATE_EDIT, CREATE_HABIT);
+			
 			HabitEntry habitEntryDialog = new HabitEntry();
+			habitEntryDialog.setArguments(args);
 			habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
 			break;
+			
 		case R.id.menu_settings:
 			startActivityForResult(new Intent(this, SettingsActivity.class), 1);
 			break;

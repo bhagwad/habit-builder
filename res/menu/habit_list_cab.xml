@@ -3,9 +3,15 @@
 
     <item
         android:id="@+id/menu_habit_delete"
-        android:title="Delete"
         android:icon="@android:drawable/ic_menu_delete"
-        android:showAsAction="always" >
+        android:showAsAction="ifRoom|withText"
+        android:title="Delete">
+    </item>
+    <item
+        android:id="@+id/menu_habit_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:showAsAction="ifRoom|withText"
+        android:title="Edit">
     </item>
 
 </menu>

@@ -34,6 +34,9 @@ public class HabitEntry extends DialogFragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		//Log.d("Debug", getArguments().getInt(HabitList.CREATE_EDIT, 5) + "");
+		
 		View v = inflater.inflate(R.layout.habit_entry, container);
 		mSaveHabit = (Button) v.findViewById(R.id.button_habit_save);
 		mCancel = (Button) v.findViewById(R.id.button_habit_cancel);
