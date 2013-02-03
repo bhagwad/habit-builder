@@ -21,7 +21,7 @@ public class HabitEntry extends DialogFragment implements OnClickListener {
 	EditText mHabitName;
 	EditText mHabitGoal;
 	TextView textErrorMessage;
-
+	
 	// We'll use this interface in HabitList to pass stuff back
 	public interface HabitEntryListener {
 		void onHabitEntry(String mHabitName, String mHabitGoal);
@@ -35,8 +35,10 @@ public class HabitEntry extends DialogFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		//Log.d("Debug", getArguments().getInt(HabitList.CREATE_EDIT, 5) + "");
+		if (getArguments().getInt(HabitList.CREATE_EDIT, 5) == HabitList.EDIT_HABIT)
+			populateHabitEntry();
 		
+			
 		View v = inflater.inflate(R.layout.habit_entry, container);
 		mSaveHabit = (Button) v.findViewById(R.id.button_habit_save);
 		mCancel = (Button) v.findViewById(R.id.button_habit_cancel);
@@ -51,6 +53,12 @@ public class HabitEntry extends DialogFragment implements OnClickListener {
 		getDialog().setTitle("Create a New Habit");
 
 		return v;
+	}
+
+	private void populateHabitEntry() {
+		
+		long mId = getArguments().getLong(HabitColumns._ID);
+		Log.d("Debug", mId + "");
 	}
 
 	public void onClick(View v) {

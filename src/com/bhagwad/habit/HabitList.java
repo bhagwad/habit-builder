@@ -173,6 +173,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 					HabitEntry habitEntryDialog = new HabitEntry();
 					habitEntryDialog.setArguments(args);
 					habitEntryDialog.show(getFragmentManager(), "habit_entry_dialogue");
+					mode.finish();
 
 					break;
 					
