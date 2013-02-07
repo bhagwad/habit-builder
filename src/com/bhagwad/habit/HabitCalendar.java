@@ -12,15 +12,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -31,8 +28,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +43,8 @@ public class HabitCalendar extends Activity {
 	GridView mGridViewWeekdays;
 	TextView monthName;
 	String habitName;
+	Button previousMonth;
+	Button nextMonth;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,8 @@ public class HabitCalendar extends Activity {
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
 
 		monthName = (TextView) findViewById(R.id.textView_monthname);
+		previousMonth = (Button) findViewById(R.id.imageButton_month_previous);
+		nextMonth = (Button) findViewById(R.id.imageButton_month_next);
 		
 		getActionBar().setTitle(habitName);
 
@@ -89,9 +90,7 @@ public class HabitCalendar extends Activity {
 	}
 
 	private void setUpNavigation() {
-		ImageButton previousMonth = (ImageButton) findViewById(R.id.imageButton_month_previous);
-		ImageButton nextMonth = (ImageButton) findViewById(R.id.imageButton_month_next);
-
+		
 		previousMonth.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -277,6 +276,15 @@ public class HabitCalendar extends Activity {
 		simpleDateFormat.setCalendar(mCalendar);
 
 		monthName.setText(simpleDateFormat.format(mCalendar.getTime()));
+		
+		/*Add a month to set the "nextmonth" button. Subtract two to get the "previousmonth"
+		button. Finally add a month to go back to where we were before.*/
+		
+		mCalendar.add(Calendar.MONTH, 1);
+		nextMonth.setText(simpleDateFormat.format(mCalendar.getTime()) + Html.fromHtml("&rarr;"));
+		mCalendar.add(Calendar.MONTH, -2);
+		previousMonth.setText(Html.fromHtml("&larr;") + simpleDateFormat.format(mCalendar.getTime()));
+		mCalendar.add(Calendar.MONTH, 1);
 	}
 
 	private void setUpWeekdays() {

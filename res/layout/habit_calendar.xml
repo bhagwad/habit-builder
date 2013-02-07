@@ -3,32 +3,29 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="20dp" >
 
-    <ImageButton
+    <Button
         android:id="@+id/imageButton_month_previous"
-        android:background="#F2F2F2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/arrow_left" />
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/white" />
 
-    <ImageButton
+    <Button
         android:id="@+id/imageButton_month_next"
-        android:background="#F2F2F2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/arrow_right" />
+        android:layout_marginRight="10dp"
+        android:background="@android:color/white" />
 
     <TextView
         android:id="@+id/textView_monthname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/imageButton_month_previous"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -39,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView_monthname"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="7"
@@ -53,9 +51,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/gridview_habit_calendar_weekdays"
         android:gravity="center"
-        android:numColumns="7"
-        android:stretchMode="columnWidth"
         android:listSelector="@null"
-         />
+        android:numColumns="7"
+        android:stretchMode="columnWidth" />
 
 </RelativeLayout>
