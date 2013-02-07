@@ -1,5 +1,5 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="40dp"
+    android:minWidth="100dp"
     android:minHeight="10dp"
     android:updatePeriodMillis="0"
     android:configure="com.bhagwad.habit.HabitWidgetConfiguration"

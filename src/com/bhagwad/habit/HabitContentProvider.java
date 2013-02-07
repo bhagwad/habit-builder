@@ -32,40 +32,31 @@ public class HabitContentProvider extends ContentProvider {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 
-			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" 
-			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
-			+ HabitColumns.HABIT_NAME + " TEXT, " 
-			+ HabitColumns.HABIT_GOAL + " TEXT, " 
-			+ "UNIQUE ("+HabitColumns.HABIT_NAME
-			+ ") ON CONFLICT IGNORE"
-			+ ");");
+			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS + " (" + HabitColumns._ID + " INTEGER PRIMARY KEY, "
+					+ HabitColumns.HABIT_NAME + " TEXT, " + HabitColumns.HABIT_GOAL + " TEXT, " + "UNIQUE (" + HabitColumns.HABIT_NAME
+					+ ") ON CONFLICT IGNORE" + ");");
 
-			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS_RECORD + " (" 
-			+ HabitColumns._ID + " INTEGER PRIMARY KEY, "
-			+ HabitColumns.HABIT_NAME + " TEXT, " 
-			+ HabitColumns.HABIT_OCCURRENCE + " TEXT, "
-			+ "UNIQUE ("+HabitColumns.HABIT_NAME+","+HabitColumns.HABIT_OCCURRENCE
-			+ ") ON CONFLICT IGNORE, "
-			+ "CONSTRAINT fk_habitname FOREIGN KEY (" + HabitColumns.HABIT_NAME + ") REFERENCES " + HabitDefinitions.TABLE_HABITS + "("+ HabitColumns.HABIT_NAME + ") "
-			+ "ON DELETE CASCADE"
-			+ ");");
+			db.execSQL("CREATE TABLE " + HabitDefinitions.TABLE_HABITS_RECORD + " (" + HabitColumns._ID + " INTEGER PRIMARY KEY, "
+					+ HabitColumns.HABIT_NAME + " TEXT, " + HabitColumns.HABIT_OCCURRENCE + " TEXT, " + "UNIQUE ("
+					+ HabitColumns.HABIT_NAME + "," + HabitColumns.HABIT_OCCURRENCE + ") ON CONFLICT IGNORE, "
+					+ "CONSTRAINT fk_habitname FOREIGN KEY (" + HabitColumns.HABIT_NAME + ") REFERENCES " + HabitDefinitions.TABLE_HABITS
+					+ "(" + HabitColumns.HABIT_NAME + ") " + "ON DELETE CASCADE ON UPDATE CASCADE" + ");");
 
 		}
-		
+
 		@Override
 		public void onOpen(SQLiteDatabase db) {
 			// TODO Auto-generated method stub
 			super.onOpen(db);
-			
+
 			if (!db.isReadOnly()) {
-		        // Enable foreign key constraints
-		        db.execSQL("PRAGMA foreign_keys=ON;");
-		    }
+				// Enable foreign key constraints
+				db.execSQL("PRAGMA foreign_keys=ON;");
+			}
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -165,7 +156,7 @@ public class HabitContentProvider extends ContentProvider {
 			throw new IllegalArgumentException("Unknown URI " + uri);
 
 		}
-		
+
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 
@@ -175,9 +166,25 @@ public class HabitContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int update(Uri uri, ContentValues initialValues, String whereClause, String[] whereArgs) {
+
+		ContentValues values;
+
+		if (initialValues == null)
+			values = new ContentValues();
+		else
+			values = new ContentValues(initialValues);
+
+		String mTableName = setTableName(uri);
+
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		int rows = db.update(mTableName, values, whereClause, whereArgs);
+
+		if (rows > 0) {
+			getContext().getContentResolver().notifyChange(uri, null);
+		}
+
+		return rows;
 	}
 
 	static {
