@@ -65,7 +65,7 @@ public class HabitCalendar extends Activity {
 		previousMonth = (Button) findViewById(R.id.imageButton_month_previous);
 		nextMonth = (Button) findViewById(R.id.imageButton_month_next);
 		
-		getActionBar().setTitle(habitName);
+		getActionBar().setTitle(habitName + " - Tap to Toggle Date");
 
 		setUpMonthName();
 		setUpWeekdays();
@@ -281,9 +281,9 @@ public class HabitCalendar extends Activity {
 		button. Finally add a month to go back to where we were before.*/
 		
 		mCalendar.add(Calendar.MONTH, 1);
-		nextMonth.setText(simpleDateFormat.format(mCalendar.getTime()) + Html.fromHtml("&rarr;"));
+		nextMonth.setText(simpleDateFormat.format(mCalendar.getTime()));
 		mCalendar.add(Calendar.MONTH, -2);
-		previousMonth.setText(Html.fromHtml("&larr;") + simpleDateFormat.format(mCalendar.getTime()));
+		previousMonth.setText(simpleDateFormat.format(mCalendar.getTime()));
 		mCalendar.add(Calendar.MONTH, 1);
 	}
 
