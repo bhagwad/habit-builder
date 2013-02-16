@@ -290,7 +290,7 @@ public class HabitCalendar extends Activity {
 	private void setUpWeekdays() {
 		mGridViewWeekdays = (GridView) findViewById(R.id.gridview_habit_calendar_weekdays);
 		String[] weekdaysArray = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-		ArrayAdapter<String> weekdaysArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, weekdaysArray);
+		ArrayAdapter<String> weekdaysArrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, weekdaysArray);
 		mGridViewWeekdays.setAdapter(weekdaysArrayAdapter);
 	}
 

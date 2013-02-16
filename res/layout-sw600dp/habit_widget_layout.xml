@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="Habit Name"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
     
         <TextView
         android:id="@+id/textView_widget_latest_streak"
@@ -23,15 +23,14 @@
         android:layout_alignParentLeft="true"
         android:text="Latest streak"
         android:layout_below="@+id/textView_widget_habit_name"
-        android:textSize="10dp"
+        android:textSize="15dp"
         android:textColor="@android:color/white" />
 
     <ProgressBar
         android:id="@+id/progressBar_widget_latest_streak"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="150dp"
-        android:layout_marginTop="5dp"
-        android:layout_height="8dp"
+        android:layout_height="10dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView_widget_latest_streak"
         android:progressDrawable="@drawable/search_drawable" />
