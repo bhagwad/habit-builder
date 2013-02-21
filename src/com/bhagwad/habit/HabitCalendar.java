@@ -65,7 +65,7 @@ public class HabitCalendar extends Activity {
 		previousMonth = (Button) findViewById(R.id.imageButton_month_previous);
 		nextMonth = (Button) findViewById(R.id.imageButton_month_next);
 		
-		getActionBar().setTitle(habitName);
+		getActionBar().setTitle(habitName + " - Tap to Toggle");
 
 		setUpMonthName();
 		setUpWeekdays();
