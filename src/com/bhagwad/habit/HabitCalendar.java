@@ -9,10 +9,12 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,6 +61,7 @@ public class HabitCalendar extends Activity {
 			mCalendar = Calendar.getInstance();
 		
 		habitName = getIntent().getExtras().getString(HabitColumns.HABIT_NAME);
+		Log.d("Debug", getIntent().getExtras().getDouble("random") + "");
 		mHabitGrid = (GridView) findViewById(R.id.gridview_habit_calendar);
 
 		monthName = (TextView) findViewById(R.id.textView_monthname);
@@ -84,7 +87,8 @@ public class HabitCalendar extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				finish();
+				Intent i = new Intent (this, HabitList.class);
+				startActivity(i);
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -32,6 +32,17 @@ public class HabitWidgetProvider extends AppWidgetProvider {
 			
 		}
 	}
+	
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		for (int i = 0; i < appWidgetIds.length; i++) {
+			int id = appWidgetIds[i];
+			SharedPreferences prefs = context.getSharedPreferences(HabitWidgetConfiguration.PREFS, 0);
+			String habitName = prefs.getString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+id, null);
+			
+			Utilities.removeTheName(context, id, habitName);
+		}
+	}
 
 
 }

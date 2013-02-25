@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.view.View.OnClickListener;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.bhagwad.habit.HabitDefinitions.HabitColumns;
@@ -21,13 +21,13 @@ public class Utilities {
 	public static void updateWidget(int mAppWidgetId, String habitName, Context ctxt) {
 		
 		int[] streakArray = Utilities.getArrayStatistics(habitName, ctxt);
-		int longestStreak = streakArray[0];
 		int mostRecentStreak = streakArray[1];
 		
 		RemoteViews views = new RemoteViews(ctxt.getPackageName(), R.layout.habit_widget_layout);
 		
-		Intent i = new Intent(ctxt, HabitList.class);
-		PendingIntent pi = PendingIntent.getActivity(ctxt, 0, i, 0);
+		Intent i = new Intent(ctxt, HabitCalendar.class);
+		i.putExtra(HabitColumns.HABIT_NAME, habitName);
+		PendingIntent pi = PendingIntent.getActivity(ctxt, mAppWidgetId, i, 0);
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctxt); 
 		String habitLength = sharedPref.getString("habit_length_days", "21");
@@ -154,7 +154,7 @@ public class Utilities {
 		return hashOccurences;
 	}
 	
-	private static void saveTheName(Context ctxt, int mAppWidgetId, String text) {
+	public static void saveTheName(Context ctxt, int mAppWidgetId, String text) {
 		
 		/*Associate the widget id with the habit name and the habit name with the widget id
 		That way we can update the widget with either one*/
@@ -164,6 +164,16 @@ public class Utilities {
 		prefs.putString(HabitWidgetConfiguration.PREFS_PREFIX_KEY+text, String.valueOf(mAppWidgetId));
 		prefs.commit();
 		
+	}
+	
+	public static void removeTheName(Context ctxt, int mAppWidgetId, String text) {
+		
+		/*Delete the names and associated widget id*/
+		
+		SharedPreferences.Editor prefs = ctxt.getSharedPreferences(HabitWidgetConfiguration.PREFS, 0).edit();
+		prefs.remove(HabitWidgetConfiguration.PREFS_PREFIX_KEY+mAppWidgetId);
+		prefs.remove(HabitWidgetConfiguration.PREFS_PREFIX_KEY+text);
+		prefs.commit();
 	}
 
 }
