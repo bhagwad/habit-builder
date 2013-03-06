@@ -34,12 +34,17 @@ public final class R {
         public static final int imageButton_month_previous=0x7f080001;
         public static final int imageView_star=0x7f080009;
         public static final int listview_habit=0x7f080010;
-        public static final int menu_add=0x7f08001f;
-        public static final int menu_habit_delete=0x7f080021;
-        public static final int menu_habit_edit=0x7f080022;
-        public static final int menu_settings=0x7f080020;
+        public static final int menu_add=0x7f080024;
+        public static final int menu_habit_delete=0x7f080026;
+        public static final int menu_habit_edit=0x7f080027;
+        public static final int menu_settings=0x7f080025;
         public static final int progressBar_latest_streak=0x7f080014;
         public static final int progressBar_widget_latest_streak=0x7f08001d;
+        public static final int rating_description=0x7f080020;
+        public static final int rating_nothanksbtn=0x7f080023;
+        public static final int rating_ratebtn=0x7f080021;
+        public static final int rating_remindbtn=0x7f080022;
+        public static final int rating_title=0x7f08001f;
         public static final int spinner_habit_list=0x7f080017;
         public static final int textView1=0x7f08000b;
         public static final int textView_date=0x7f080006;
@@ -66,6 +71,7 @@ public final class R {
         public static final int habit_widget_configuration=0x7f030005;
         public static final int habit_widget_layout=0x7f030006;
         public static final int list_item=0x7f030007;
+        public static final int rating_layout=0x7f030008;
     }
     public static final class menu {
         public static final int habit_list_action_bar=0x7f070000;

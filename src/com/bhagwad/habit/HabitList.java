@@ -45,6 +45,7 @@ public class HabitList extends Activity implements HabitEntryListener, LoaderCal
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.habit_list);
+		RatingHelper.app_launched(this);
 
 		setUpListViewAndAdapter();
 
